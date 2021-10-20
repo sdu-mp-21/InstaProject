@@ -1,0 +1,4 @@
+#Mon Oct 04 11:38:35 ALMT 2021
+base.0=E\:\\SDU\\3 kurs\\1\\Mobile Programming\\Final Project (Instagram clone)\\code\\instagram_clone\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
+path.0=classes.dex
+renamed.0=classes.dex
