@@ -11,7 +11,7 @@
     "final",
     "project"
   ],
-  "author": "Bakytbek Kenzhebekov 190103042@stu.sdu.edu.kz",
+  "author": "",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.0.1",
