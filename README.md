@@ -17,6 +17,7 @@ First Tab:
 
 ```sh
 cd service
+mkdir publications
 npm i
 node index.js
 ```
