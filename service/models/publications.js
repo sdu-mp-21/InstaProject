@@ -23,15 +23,21 @@ const publicationSchema = new mongoose.Schema(
             type: String,
             default: ''
         },
-        image: {
-            data: {
-                type: Buffer,
-                required: true
-            }
+        data: {
+            type: Buffer,
+            required: true
+        },
+        name: {
+            type: String,
+            required: true
+        },
+        type: {
+            type: String,
+            default: 'publication'
         }
     }, {
-        timestamps: true
-    }
+    timestamps: true
+}
 )
 
 autoIncrement.initialize(mongoose)
@@ -42,4 +48,4 @@ publicationSchema.plugin(autoIncrement.plugin, {
     incrementBy: 1
 })
 
-module.exports = mongoose.model('publications', publicationSchema)
+module.exports = mongoose.model('publication', publicationSchema)

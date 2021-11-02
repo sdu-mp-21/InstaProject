@@ -1,14 +1,10 @@
 const express = require('express')
 const router = express.Router()
 const jwt = require('jsonwebtoken')
-const multer = require('multer')
-const fs = require('fs')
 const User = require('../models/users')
-const Publication = require('../models/publications')
 
 router.get('/', async (req, res) => {
-    // const verifyToken = jwt.verify(req.query.token)
-    const verifyToken = true
+    const verifyToken = jwt.verify(req.query.token, 'auth')
 
     if (verifyToken) {
         const result = await User.find({
@@ -24,6 +20,8 @@ router.get('/', async (req, res) => {
         )
 
         res.send({ result })
+    } else {
+        res.status(401).send()
     }
 })
 

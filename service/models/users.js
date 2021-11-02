@@ -44,11 +44,7 @@ const userSchema = new mongoose.Schema({
     },
     avatar: {
         type: String,
-        default: 'https://www.meme-arsenal.com/memes/fefac21eda463aa9a307c7cfdbea1bee.jpg'
-    },
-    publications: {
-        type: Array,
-        default: []
+        default: 'https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-portrait-176256935.jpg'
     },
     oldPasswords: {
         type: Array,

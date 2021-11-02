@@ -23,6 +23,7 @@
     "mongoose-auto-increment": "^5.0.1",
     "multer": "^1.4.3",
     "rand-token": "^1.0.1",
-    "random-number": "0.0.9"
+    "random-number": "0.0.9",
+    "random-token": "0.0.8"
   }
 }
