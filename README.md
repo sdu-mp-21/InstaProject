@@ -6,7 +6,7 @@ Instagram is an American photo and video sharing social network founded by Kevin
 - [Alinur Barlybekov](https://github.com/AlinurBarlybekov)
 - [Bakytbek Kenzhebekov](https://github.com/Bakytbek03042)
 - [Makhambet Berikov](https://github.com/mahambetberikov)
-- [Rakhat Lesbek](https://github.com/Rakhat)
+- [Rakhat Lesbek](https://github.com/rakhatlesbek)
 
 
 ## Development
