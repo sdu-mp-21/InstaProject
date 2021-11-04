@@ -25,7 +25,11 @@ router.get('/profile', async (req, res) => {
                         fs.writeFileSync(`./publications/${publicationName}.png`, myBuffer)
                     }
 
-                    pubs.push({ src: `http://localhost:5000/get/images/${publication.publicationId}` })
+                    pubs.push(
+                        {
+                            src: `http://localhost:5000/get/images/${publication.publicationId}`,
+                            publicationId: publication.publicationId
+                        })
                 } catch (e) {
                     console.log(e)
                 }
@@ -53,10 +57,43 @@ router.get('/profile', async (req, res) => {
     }
 })
 
+router.get('/publication', async (req, res) => {
+    const verify = jwt.verify(req.query.token, 'auth')
+    const { publicationId } = req.query
+
+    if (verify) {
+
+        const publication = await Publication.findOne({ type: 'publication', publicationId },
+            {
+                publicationId: 1,
+                userId: 1,
+                likes: 1,
+                comments: 1,
+                desctiption: 1,
+            })
+
+        const user = await User.findOne({ userId: verify.userId })
+
+        res.send({
+            publicationId: publication.publicationId,
+            userId: publication.userId,
+            likes: publication.likes,
+            comments: publication.comments,
+            description: publication.desctiption || '',
+            src: 'http://localhost:5000/get/images/' + publication.publicationId,
+            avatar: user.avatar,
+            login: user.login
+        })
+
+    } else {
+        res.status(401).send()
+    }
+})
+
 router.get('/images/:publicationId', async (req, res) => {
     const { publicationId } = req.params
     if (publicationId) {
-        const publication = await Publication.findOne({ publicationId })
+        const publication = await Publication.findOne({ publicationId: parseInt(publicationId) })
 
         if (publication) {
 

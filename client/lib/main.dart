@@ -27,18 +27,24 @@ void main() async {
   }
 
   if (isAuthenticate) {
-    runApp(MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-          scaffoldBackgroundColor: const Color.fromRGBO(0, 0, 0, 1.0)),
-      home: HomeElements(),
-    ));
+    runApp(
+      MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          scaffoldBackgroundColor: const Color.fromRGBO(0, 0, 0, 1.0),
+        ),
+        home: HomeElements(),
+      ),
+    );
   } else {
-    runApp(MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-          scaffoldBackgroundColor: const Color.fromRGBO(0, 0, 0, 1.0)),
-      home: Auth(),
-    ));
+    runApp(
+      MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          scaffoldBackgroundColor: const Color.fromRGBO(0, 0, 0, 1.0),
+        ),
+        home: Auth(),
+      ),
+    );
   }
 }
