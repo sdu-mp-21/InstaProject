@@ -33,7 +33,7 @@ class MyPagesState extends State<MyPages> {
   final List<Widget> _widgetOptions = <Widget>[
     Home(),
     Search(),
-    Add('Flutter Demo Home Page'),
+    Add(),
     Profile()
   ];
 
