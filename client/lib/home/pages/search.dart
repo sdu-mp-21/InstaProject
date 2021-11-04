@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:instagram/home/pages/home.dart';
+import 'package:instagram/home/pages/profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<Result> fetchResult(String query) async {
@@ -153,7 +154,7 @@ class PrintResult extends StatelessWidget {
                     GestureDetector(
                       onTap: () {
                         Navigator.push(context,MaterialPageRoute(
-                            builder: (context) => Home()),);
+                            builder: (context) => Profile()),);
                       },
                       child: Text(
                         result[i]['login'],
