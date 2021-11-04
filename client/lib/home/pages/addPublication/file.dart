@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 
+import 'package:json_annotation/json_annotation.dart';
+part 'file.g.dart';
 
+
+@JsonSerializable()
 class FileModel {
-  List<String> files = [];
-  String folder = '';
+  final List<String> files;
+  final String folder;
 
   FileModel(this.files, this.folder);
 
-  FileModel.fromJson(Map<String, dynamic> json) {
-    files = json['files'].cast<String>();
-    folder = json['folderName'];
-  }
+  factory FileModel.fromJson(Map<String, dynamic> json) => _$FileModelFromJson(json);
+
+  Map<String, dynamic> toJson() => _$FileModelToJson(this);
+    
+  
 }
