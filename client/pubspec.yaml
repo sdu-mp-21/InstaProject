@@ -18,6 +18,7 @@ dependencies:
   shared_preferences:
   file_picker:
   cupertino_icons: ^1.0.2
+  storage_path: ^0.2.0
 
 dev_dependencies:
   flutter_test:
