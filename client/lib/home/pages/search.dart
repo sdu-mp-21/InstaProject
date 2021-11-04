@@ -62,17 +62,19 @@ class StateSearch extends State<Search> {
 
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     return Scaffold(
         body: Column(
       children: [
         Container(
+          width:size.width - 30,
           decoration: BoxDecoration(
             color: const Color.fromRGBO(59, 59, 59, 1.0),
             border: Border.all(color: Colors.black, width: 1.0),
             borderRadius: BorderRadius.circular(5.0),
           ),
           child: Padding(
-            padding: const EdgeInsets.only(left: 10, right: 10),
+            padding: const EdgeInsets.fromLTRB(10,0,10,0),
             child: TextField(
               onChanged: (text) async {
                 setState(() {
@@ -81,8 +83,9 @@ class StateSearch extends State<Search> {
               },
               style: const TextStyle(color: Colors.white, fontSize: 14),
               decoration: const InputDecoration(
+                prefixIcon: Icon(Icons.search,color:Colors.grey),
                 hintText: 'Поиск',
-                hintStyle: TextStyle(color: Colors.grey),
+                hintStyle: TextStyle(color: Colors.grey,fontSize: 18),
                 border: InputBorder.none,
               ),
             ),
@@ -124,7 +127,7 @@ class PrintResult extends StatelessWidget {
     for (int i = 0; i < result.length; i++) {
       list.add(
         Container(
-          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+          padding: const EdgeInsets.only(left: 20,top:10,bottom: 10),
           child: Row(
             children: [
               SizedBox(
@@ -141,21 +144,27 @@ class PrintResult extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 20),
+                padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                 child: Column(
                   children: [
-                    Container(
+                Align(alignment: Alignment.centerLeft,
+                  child:
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(context, "home");
+                      },
                       child: Text(
                         result[i]['login'],
                         style: const TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                         ),
-                        textAlign: TextAlign.left,
                       ),
-                      alignment: Alignment.centerLeft,
                     ),
-                    Container(
+                ),
+
+                    Container(child:
+                      Align(alignment: Alignment.centerLeft,
                       child: Text(
                         result[i]['name'] + ' ' + result[i]['surname'],
                         style: const TextStyle(
@@ -163,7 +172,8 @@ class PrintResult extends StatelessWidget {
                         ),
                         textAlign: TextAlign.left,
                       ),
-                      alignment: Alignment.centerLeft,
+
+                    ),
                     ),
                   ],
                 ),
