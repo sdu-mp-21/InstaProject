@@ -158,6 +158,8 @@ function validateLogin(login) {
 }
 
 function validatePassword(password, login) {
+    return true
+
     if (login.length < 8 || login.length > 16) {
         return false
     }

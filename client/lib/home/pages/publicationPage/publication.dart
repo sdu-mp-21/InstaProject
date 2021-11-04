@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import '../profile.dart';
 
 class Publication extends StatefulWidget {
   var publicationId;
@@ -18,8 +19,6 @@ class Publication extends StatefulWidget {
 }
 
 Future<PublicationModel> fetchPublication(var publicationId) async {
-  print('start fetch');
-  print(publicationId);
   SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
 
   final response = await http.get(
@@ -98,7 +97,6 @@ class StatePublication extends State<Publication> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: Container(
-          alignment: Alignment.center,
           child: FutureBuilder<PublicationModel>(
             future: futurePublications,
             builder: (context, snapshot) {
@@ -129,13 +127,12 @@ class StatePublication extends State<Publication> {
                   );
                 } else if (snapshot.hasError) {
                   return Text('${snapshot.error}');
-                } else {
-                  print('not hashed data');
-                  return Text('not hashed data',
-                      style: TextStyle(color: Colors.white));
                 }
               }
-              return const CircularProgressIndicator();
+
+              return Container(
+                  alignment: Alignment.center,
+                  child: const CircularProgressIndicator());
             },
           ),
         ),
@@ -168,8 +165,120 @@ class RenderPublicaion extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(publicationId);
-
-    return Text(avatar);
+    return SingleChildScrollView(
+      child: Container(
+        child: Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 15),
+              child: Row(
+                children: [
+                  FlatButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Profile()),
+                      );
+                    },
+                    child: const Icon(
+                      Icons.arrow_back,
+                      size: 30.0,
+                      color: Colors.white,
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.only(left: 20),
+                    child: const Text(
+                      'Публикации',
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+              child: Row(
+                children: [
+                  SizedBox(
+                    width: 25,
+                    height: 25,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(90),
+                      child: Image.network(
+                        avatar,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 15),
+                    child: Text(
+                      login,
+                      style: const TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              width: double.infinity,
+              child: Image.network(
+                src,
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20,
+                vertical: 15,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: const [
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        child: Icon(
+                          Icons.favorite_border,
+                          size: 25.0,
+                          color: Colors.white,
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        child: Icon(
+                          Icons.mode_comment_outlined,
+                          size: 25.0,
+                          color: Colors.white,
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        child: Icon(
+                          Icons.send_outlined,
+                          size: 25.0,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const Icon(
+                    Icons.save,
+                    size: 25.0,
+                    color: Colors.white,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
