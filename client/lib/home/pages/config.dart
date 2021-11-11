@@ -47,12 +47,12 @@ class Config extends StatelessWidget {
                   padding: new EdgeInsets.all(15.0),
                    child: Row(
                       children: [
-                        Text('Name'),
+                        Text('Name',style: TextStyle(color: Colors.white),),
                         SizedBox(
                           width: 20,
                           height: 20,
                         ),
-                        Text('Lesbek Rakhat'),
+                        Text('Lesbek Rakhat',style: TextStyle(color: Colors.white),),
 
                    ],
 
@@ -66,17 +66,20 @@ class Config extends StatelessWidget {
 
               InkWell(
 
-                onTap: () {print('Hello');},
+                onTap: () { Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => NextPage()),
+                  );},
                 child: new Padding(
                   padding: new EdgeInsets.all(15.0),
                   child: Row(
                     children: [
-                      Text('Username'),
+                      Text('Username',style: TextStyle(color: Colors.white),),
                       SizedBox(
                         width: 20,
                         height: 20,
                       ),
-                      Text('Rakhat02'),
+                      Text('Rakhat02',style: TextStyle(color: Colors.white),),
 
                     ],
 
@@ -89,12 +92,15 @@ class Config extends StatelessWidget {
               ),
               InkWell(
 
-                onTap: () {print('Hello');},
+                onTap: () { Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => NextPage()),
+                  );},
                 child: new Padding(
                   padding: new EdgeInsets.all(15.0),
                   child: Row(
                     children: [
-                      Text('Website'),
+                      Text('Website',style: TextStyle(color: Colors.white),),
                       SizedBox(
                         width: 20,
                         height: 20,
@@ -112,17 +118,20 @@ class Config extends StatelessWidget {
               ),
               InkWell(
 
-                onTap: () {print('Hello');},
+                onTap: () { Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => NextPage()),
+                  );},
                 child: new Padding(
                   padding: new EdgeInsets.all(15.0),
                   child: Row(
                     children: [
-                      Text('Bio'),
+                      Text('Bio',style: TextStyle(color: Colors.white),),
                       SizedBox(
                         width: 20,
                         height: 20,
                       ),
-                      Text(' '),
+                      Text(' ',style: TextStyle(color: Colors.white),),
 
                     ],
 
