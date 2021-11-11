@@ -3,6 +3,8 @@ const jwt = require('jsonwebtoken')
 const fs = require('fs')
 
 const User = require('../models/users')
+const Like = require('../models/likes')
+const Comment = require('../models/comments')
 const Publication = require('../models/publications')
 
 router.get('/profile', async (req, res) => {
@@ -72,17 +74,22 @@ router.get('/publication', async (req, res) => {
                 desctiption: 1,
             })
 
+        const likes = await Like.find({ publicationId })
+        const isLiked = await Like.findOne({ publicationId, userId: verify.userId })
+        const comments = await Comment.find({ publicationId })
+
         const user = await User.findOne({ userId: verify.userId })
 
         res.send({
             publicationId: publication.publicationId,
             userId: publication.userId,
-            likes: publication.likes,
-            comments: publication.comments,
+            likes,
+            comments,
             description: publication.desctiption || '',
             src: 'http://localhost:5000/get/images/' + publication.publicationId,
             avatar: user.avatar,
-            login: user.login
+            login: user.login,
+            isLiked: isLiked !== null ? true : false
         })
 
     } else {

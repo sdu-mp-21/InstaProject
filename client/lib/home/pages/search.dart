@@ -4,6 +4,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import '/home/pages/home.dart';
+import '/home/pages/profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<Result> fetchResult(String query) async {
@@ -33,11 +35,11 @@ class Result {
 
   factory Result.fromJson(Map<String, dynamic> json) {
     return Result(
-        // userId: json['userId'],
-        // name: json['name'],
-        // surname: json['surname'],
-        // avatar: json['avatar'],
-        // login: json['login'],
+      // userId: json['userId'],
+      // name: json['name'],
+      // surname: json['surname'],
+      // avatar: json['avatar'],
+      // login: json['login'],
         result: json['result']);
   }
 }
@@ -62,54 +64,57 @@ class StateSearch extends State<Search> {
 
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     return Scaffold(
         body: Column(
-      children: [
-        Container(
-          decoration: BoxDecoration(
-            color: const Color.fromRGBO(59, 59, 59, 1.0),
-            border: Border.all(color: Colors.black, width: 1.0),
-            borderRadius: BorderRadius.circular(5.0),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.only(left: 10, right: 10),
-            child: TextField(
-              onChanged: (text) async {
-                setState(() {
-                  _futureResult = fetchResult(text);
-                });
-              },
-              style: const TextStyle(color: Colors.white, fontSize: 14),
-              decoration: const InputDecoration(
-                hintText: 'Поиск',
-                hintStyle: TextStyle(color: Colors.grey),
-                border: InputBorder.none,
+          children: [
+            Container(
+              width:size.width - 30,
+              decoration: BoxDecoration(
+                color: const Color.fromRGBO(59, 59, 59, 1.0),
+                border: Border.all(color: Colors.black, width: 1.0),
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(10,0,10,0),
+                child: TextField(
+                  onChanged: (text) async {
+                    setState(() {
+                      _futureResult = fetchResult(text);
+                    });
+                  },
+                  style: const TextStyle(color: Colors.white, fontSize: 14),
+                  decoration: const InputDecoration(
+                    prefixIcon: Icon(Icons.search,color:Colors.grey),
+                    hintText: 'Поиск',
+                    hintStyle: TextStyle(color: Colors.grey,fontSize: 18),
+                    border: InputBorder.none,
+                  ),
+                ),
               ),
             ),
-          ),
-        ),
-        FutureBuilder(
-          future: _futureResult,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              if (snapshot.hasData) {
-                _futureResult.then((data) {
-                  setState(() {
-                    result = data.result;
-                  });
-                });
+            FutureBuilder(
+              future: _futureResult,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  if (snapshot.hasData) {
+                    _futureResult.then((data) {
+                      setState(() {
+                        result = data.result;
+                      });
+                    });
 
-                return PrintResult(result);
-              } else if (snapshot.hasError) {
-                return Text('${snapshot.error}');
-              }
-            }
+                    return PrintResult(result);
+                  } else if (snapshot.hasError) {
+                    return Text('${snapshot.error}');
+                  }
+                }
 
-            return const CircularProgressIndicator();
-          },
-        )
-      ],
-    ));
+                return const CircularProgressIndicator();
+              },
+            )
+          ],
+        ));
   }
 }
 
@@ -117,14 +122,13 @@ class PrintResult extends StatelessWidget {
   List result = [];
 
   PrintResult(this.result);
-
   @override
   Widget build(BuildContext context) {
     List<Widget> list = [];
     for (int i = 0; i < result.length; i++) {
       list.add(
         Container(
-          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+          padding: const EdgeInsets.only(left: 20,top:10,bottom: 10),
           child: Row(
             children: [
               SizedBox(
@@ -141,21 +145,28 @@ class PrintResult extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 20),
+                padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                 child: Column(
                   children: [
-                    Container(
-                      child: Text(
-                        result[i]['login'],
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
+                    Align(alignment: Alignment.centerLeft,
+                      child:
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(context,MaterialPageRoute(
+                              builder: (context) => Profile()),);
+                        },
+                        child: Text(
+                          result[i]['login'],
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                        textAlign: TextAlign.left,
                       ),
-                      alignment: Alignment.centerLeft,
                     ),
-                    Container(
+
+                    Container(child:
+                    Align(alignment: Alignment.centerLeft,
                       child: Text(
                         result[i]['name'] + ' ' + result[i]['surname'],
                         style: const TextStyle(
@@ -163,7 +174,8 @@ class PrintResult extends StatelessWidget {
                         ),
                         textAlign: TextAlign.left,
                       ),
-                      alignment: Alignment.centerLeft,
+
+                    ),
                     ),
                   ],
                 ),
