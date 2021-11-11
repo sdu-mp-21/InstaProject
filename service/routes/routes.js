@@ -13,4 +13,6 @@ router.use('/like', require('../middleware/like'))
 
 router.use('/comment', require('../middleware/comment'))
 
+router.use('/stories', require('../middleware/stories'))
+
 module.exports = router
