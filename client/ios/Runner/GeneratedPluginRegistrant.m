@@ -30,6 +30,12 @@
 @import sqflite;
 #endif
 
+#if __has_include(<storage_path/StoragePathPlugin.h>)
+#import <storage_path/StoragePathPlugin.h>
+#else
+@import storage_path;
+#endif
+
 @implementation GeneratedPluginRegistrant
 
 + (void)registerWithRegistry:(NSObject<FlutterPluginRegistry>*)registry {
@@ -37,6 +43,7 @@
   [FluttertoastPlugin registerWithRegistrar:[registry registrarForPlugin:@"FluttertoastPlugin"]];
   [FLTSharedPreferencesPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTSharedPreferencesPlugin"]];
   [SqflitePlugin registerWithRegistrar:[registry registrarForPlugin:@"SqflitePlugin"]];
+  [StoragePathPlugin registerWithRegistrar:[registry registrarForPlugin:@"StoragePathPlugin"]];
 }
 
 @end
