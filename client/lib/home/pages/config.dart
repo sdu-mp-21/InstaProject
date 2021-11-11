@@ -33,48 +33,105 @@ class Config extends StatelessWidget {
       TextButton(
         onPressed: () {
         },
-        child: Text('Chang Profile Photo', style: TextStyle(color: Colors.blue),),
+        child: Text('Change Profile Photo', style: TextStyle(color: Colors.blue),),
       ),
-              Row(
-                children:[
-                  Container(
-                    padding: EdgeInsets.fromLTRB(50,10,50,10),
-                    child:
-                Text('Name',style: TextStyle(color: Colors.white),),
+                InkWell(
 
-                  ),
+                  onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => NextPage()),
+                  );
+                  },
+                child: new Padding(
+                  padding: new EdgeInsets.all(15.0),
+                   child: Row(
+                      children: [
+                        Text('Name'),
+                        SizedBox(
+                          width: 20,
+                          height: 20,
+                        ),
+                        Text('Lesbek Rakhat'),
+
+                   ],
+
+                    ),
+
+
+
+                      ),
+
+              ),
+
+              InkWell(
+
+                onTap: () {print('Hello');},
+                child: new Padding(
+                  padding: new EdgeInsets.all(15.0),
+                  child: Row(
+                    children: [
+                      Text('Username'),
+                      SizedBox(
+                        width: 20,
+                        height: 20,
+                      ),
+                      Text('Rakhat02'),
+
                     ],
-              ),
-
-              Row(
-                children:[
-                  Container(
-                    padding: EdgeInsets.fromLTRB(50,10,50,10),
-                    child:
-                    Text('Username',style: TextStyle(color: Colors.white),),
 
                   ),
-                ],
+
+
+
+                ),
+
               ),
-              Row(
-                children:[
-                  Container(
-                    padding: EdgeInsets.fromLTRB(50,10,50,10),
-                    child:
-                    Text('Website',style: TextStyle(color: Colors.white),),
+              InkWell(
+
+                onTap: () {print('Hello');},
+                child: new Padding(
+                  padding: new EdgeInsets.all(15.0),
+                  child: Row(
+                    children: [
+                      Text('Website'),
+                      SizedBox(
+                        width: 20,
+                        height: 20,
+                      ),
+                      Text(' '),
+
+                    ],
 
                   ),
-                ],
+
+
+
+                ),
+
               ),
-              Row(
-                children:[
-                  Container(
-                    padding: EdgeInsets.fromLTRB(50,10,50,10),
-                    child:
-                    Text('Bio',style: TextStyle(color: Colors.white),),
+              InkWell(
+
+                onTap: () {print('Hello');},
+                child: new Padding(
+                  padding: new EdgeInsets.all(15.0),
+                  child: Row(
+                    children: [
+                      Text('Bio'),
+                      SizedBox(
+                        width: 20,
+                        height: 20,
+                      ),
+                      Text(' '),
+
+                    ],
 
                   ),
-                ],
+
+
+
+                ),
+
               ),
         
         ],
