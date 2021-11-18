@@ -49,7 +49,8 @@ class Add extends StatelessWidget {
   }
 }
 
-//class Add extends StatefulWidget {
+
+// class Add extends StatefulWidget {
 //   Add( this.title);
 
 //   final String title;
@@ -79,7 +80,7 @@ class Add extends StatelessWidget {
 //       });
 //   }
 
-//   List<DropdownMenuItem> getItem() {
+//   List<DropdownMenuItem<FileModel>> getItem() {
 //     return files
 //             .map((e) => DropdownMenuItem(
 //                   child: Text(
@@ -88,8 +89,7 @@ class Add extends StatelessWidget {
 //                   ),
 //                   value: e,
 //                 ))
-//             .toList() ??
-//         [];
+//             .toList() ?? [];
 //   }
 
 //   @override
@@ -108,9 +108,9 @@ class Add extends StatelessWidget {
 //                     DropdownButtonHideUnderline(
 //                         child: DropdownButton<FileModel>(
 //                       items: getItem(),
-//                       onChanged: (FileModel d) {
-//                         assert(d.files.length > 0);
-//                         image = d.files[0];
+//                       onChanged: (FileModel? d) {
+//                         assert(d!.files.length > 0);
+//                         image = d!.files[0];
 //                         setState(() {
 //                           selectedModel = d;
 //                         });
