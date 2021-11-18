@@ -6,6 +6,9 @@ const User = require('../models/users')
 const Like = require('../models/likes')
 const Comment = require('../models/comments')
 const Publication = require('../models/publications')
+const Subscription = require('../models/subscriptions')
+
+
 
 router.get('/profile', async (req, res) => {
     try {
@@ -94,6 +97,41 @@ router.get('/publication', async (req, res) => {
 
     } else {
         res.status(401).send()
+    }
+})
+
+router.get('/publications', async (req, res) => {
+    try {
+
+        const verify = jwt.verify(req.query.token, 'auth')
+        if (verify) {
+
+            const peopleIFollow = await Subscription.find({ srcUserId: verify.userId })
+
+            const mongoQuery = []
+            for (let people of peopleIFollow) {
+                mongoQuery.push({
+                    userId: people.destUserId
+                })
+            }
+
+            if (mongoQuery.length !== 0) {
+
+                const publications = await Publication.find({ $or: mongoQuery })
+
+                console.log(publications)
+
+            } else {
+                res.send([])
+            }
+
+        } else {
+            res.status(401).send()
+        }
+
+    } catch (e) {
+        console.log(e)
+        res.status(500).send()
     }
 })
 
