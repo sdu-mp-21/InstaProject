@@ -54,10 +54,6 @@ const userSchema = new mongoose.Schema({
         type: Array,
         default: []
     },
-    subscriptions: {
-        type: Array,
-        default: []
-    },
     closeFriends: {
         type: Array,
         default: []

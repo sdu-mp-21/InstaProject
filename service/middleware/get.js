@@ -8,14 +8,14 @@ const Comment = require('../models/comments')
 const Publication = require('../models/publications')
 const Subscription = require('../models/subscriptions')
 
-
-
 router.get('/profile', async (req, res) => {
     try {
         const verify = jwt.verify(req.query.token, 'auth')
         if (verify) {
             const user = await User.findOne({ userId: verify.userId })
             const publications = await Publication.find({ userId: verify.userId, type: 'publication' })
+            const subscriptions = await Subscription.find({ srcUserId: verify.userId })
+            const subscribers = await Subscription.find({ destUserId: verify.userId })
             const pubs = []
 
             for (let publication of publications) {
@@ -50,7 +50,9 @@ router.get('/profile', async (req, res) => {
                 phoneNumber: user.phoneNumber,
                 email: user.email,
                 aboutMe: user.aboutMe,
-                avatar: user.avatar
+                avatar: user.avatar,
+                subscriptions,
+                subscribers,
             })
 
         } else {
@@ -114,12 +116,34 @@ router.get('/publications', async (req, res) => {
                     userId: people.destUserId
                 })
             }
-
+            //70873777737
+            //72258897972
+            //eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjcwODczNzc3NzM3LCJpYXQiOjE2MzcyMTI5MzAsImV4cCI6MTYzNzIzNDUzMH0.Lablhk-ZOP5DVsWynQZgxjx9M3YcrbYHvhZfhiz4eQk
             if (mongoQuery.length !== 0) {
 
                 const publications = await Publication.find({ $or: mongoQuery })
 
-                console.log(publications)
+                let result = []
+                for (let publication of publications) {
+                    const user = await User.findOne({ userId: publication.userId })
+                    const likes = await Like.find({ publicationId: publication.publicationId })
+                    const comments = await Comment.find({ publicationId: publication.publicationId })
+                    const isLiked = await Like.findOne({ publicationId: publication.publicationId, userId: verify.userId })
+
+                    result.push({
+                        publicationId: publication.publicationId,
+                        userId: publication.userId,
+                        likes,
+                        comments,
+                        description: publication.desctiption || '',
+                        src: 'http://localhost:5000/get/images/' + publication.publicationId,
+                        avatar: user.avatar,
+                        login: user.login,
+                        isLiked: isLiked !== null ? true : false
+                    })
+                }
+
+                res.send(result)
 
             } else {
                 res.send([])
