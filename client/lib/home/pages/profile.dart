@@ -35,6 +35,8 @@ class User {
   final String aboutMe;
   final String avatar;
   final List publications;
+  final List subscriptions;
+  final List subscribers;
 
   User(
       {required this.name,
@@ -46,7 +48,9 @@ class User {
       required this.avatar,
       required this.userId,
       required this.login,
-      required this.publications});
+      required this.publications,
+      required this.subscriptions,
+      required this.subscribers});
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
@@ -60,6 +64,8 @@ class User {
       avatar: json['avatar'],
       login: json['login'],
       publications: json['publications'],
+      subscriptions: json['subscriptions'],
+      subscribers: json['subscribers'],
     );
   }
 }
@@ -109,13 +115,13 @@ class StateProfile extends State<Profile> {
                       aboutMe = data.aboutMe;
                       avatar = data.avatar;
                       publications = data.publications;
-                      countSubscribers = [];
-                      countSubscriptions = [];
+                      countSubscribers = data.subscribers;
+                      countSubscriptions = data.subscriptions;
                     });
                   });
 
                   return GenerateProfile(
-                      name, surname, aboutMe, avatar, publications);
+                      name, surname, aboutMe, avatar, publications, countSubscribers, countSubscriptions);
                 } else if (snapshot.hasError) {
                   return Text('${snapshot.error}');
                 }
@@ -140,7 +146,7 @@ class GenerateProfile extends StatelessWidget {
   List subscriptions = [];
 
   GenerateProfile(
-      this.name, this.surname, this.aboutMe, this.avatar, this.publications);
+      this.name, this.surname, this.aboutMe, this.avatar, this.publications, this.subscribers, this.subscriptions);
 
   @override
   Widget build(BuildContext context) {
@@ -311,7 +317,8 @@ List<Widget> getPublications(double imageWidth, List publications, context) {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => Publication(publicationId)),
+              MaterialPageRoute(
+                  builder: (context) => Publication(publicationId)),
             );
           },
           child: SizedBox(
