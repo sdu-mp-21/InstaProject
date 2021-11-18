@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'editfields.dart';
 
-void main() {
-  runApp(direct());
-}
 String name="rakhat02";
   class direct extends StatelessWidget {
-    const direct({Key? key}) : super(key: key);
-    @override
+    
     Widget build(BuildContext context) {
       return MaterialApp(
         home:Scaffold(
