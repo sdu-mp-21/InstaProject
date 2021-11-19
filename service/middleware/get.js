@@ -134,7 +134,7 @@ router.get("/comments", async (req, res) => {
   }
 });
 
-router.post("/comments", async (req, res) => {
+router.post("/comment", async (req, res) => {
   try {
     const { publicationId, userId, text } = req.body;
 
@@ -144,6 +144,24 @@ router.post("/comments", async (req, res) => {
         userId,
         text,
       }).save();
+
+      res.status(200).send();
+    } else {
+      res.status(400).send();
+    }
+  } catch (e) {
+    console.log(e);
+
+    res.status(500).send();
+  }
+});
+
+router.post("/delete/comment", async (req, res) => {
+  try {
+    const { commentId } = req.body;
+
+    if (commentId) {
+      await Comment.deleteMany({ commentId });
     } else {
       res.status(400).send();
     }
