@@ -3,6 +3,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app/home/pages/anotherProfile.dart';
 import 'package:flutter_app/home/pages/profile.dart';
 import 'package:flutter_app/home/pages/publicationPage/publication.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -159,9 +160,10 @@ class RenderComments extends StatelessWidget {
             children: [
               FlatButton(
                 onPressed: () {
+                  print(comments[i]);
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => Profile()),
+                    MaterialPageRoute(builder: (context) => AnotherProfile(comments[i]['userId'])),
                   );
                 },
                 child: SizedBox(

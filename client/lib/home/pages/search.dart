@@ -8,6 +8,8 @@ import './home.dart';
 import './profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'anotherProfile.dart';
+
 Future<Result> fetchResult(String query) async {
   SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
 
@@ -153,11 +155,9 @@ class PrintResult extends StatelessWidget {
                       alignment: Alignment.centerLeft,
                       child: GestureDetector(
                         onTap: () {
-                          print(result[i]['login']);
-
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => Profile()),
+                            MaterialPageRoute(builder: (context) => AnotherProfile(result[i]['userId'])),
                           );
                         },
                         child: Text(

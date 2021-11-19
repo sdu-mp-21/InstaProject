@@ -71,6 +71,83 @@ router.get("/profile", async (req, res) => {
     res.sendStatus(500);
   }
 });
+//eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjcwODczNzc3NzM3LCJpYXQiOjE2MzczMTAyNzMsImV4cCI6MTYzNzMzMTg3M30.jiaGzMSB9LkuPNKH62y4wW3-8ebfRhZRBPT1h30kNeU?id=70873777737
+router.get("/another/profile", async (req, res) => {
+  try {
+    console.log(req.query.token);
+    const verify = jwt.verify(req.query.token, "auth");
+    if (verify) {
+      if (req.query.id) {
+        const userId = req.query.id;
+        const user = await User.findOne({ userId });
+        const publications = await Publication.find({
+          userId,
+          type: "publication",
+        });
+        const subscriptions = await Subscription.find({
+          srcUserId: userId,
+        });
+        const subscribers = await Subscription.find({
+          destUserId: userId,
+        });
+        const pubs = [];
+
+        for (let publication of publications) {
+          try {
+            const publicationName = publication.name;
+            var myBuffer = new Buffer(publication.data.length);
+            for (var i = 0; i < publication.data.length; i++) {
+              myBuffer[i] = publication.data[i];
+            }
+
+            if (!fs.existsSync(`./publications/${publicationName}.png`)) {
+              fs.writeFileSync(
+                `./publications/${publicationName}.png`,
+                myBuffer
+              );
+            }
+
+            pubs.push({
+              src: `${config.get("service.url")}get/images/${
+                publication.publicationId
+              }`,
+              publicationId: publication.publicationId,
+            });
+          } catch (e) {
+            console.log(e);
+          }
+        }
+
+        const isSubscribe = await Subscription.findOne({
+          srcUserId: verify.userId,
+        });
+
+        res.status(200).send({
+          publications: pubs,
+          userId: user.userId,
+          login: user.login,
+          name: user.name,
+          surname: user.surname,
+          site: user.site,
+          phoneNumber: user.phoneNumber,
+          email: user.email,
+          aboutMe: user.aboutMe,
+          avatar: user.avatar,
+          subscriptions,
+          subscribers,
+          isSubscribe: isSubscribe === null ? false : true,
+        });
+      } else {
+        res.status(400).send();
+      }
+    } else {
+      res.status(401).send({ message: "Вы не авторизованы" });
+    }
+  } catch (e) {
+    console.log(e);
+    res.sendStatus(500);
+  }
+});
 
 router.get("/publication", async (req, res) => {
   const verify = jwt.verify(req.query.token, "auth");
@@ -119,7 +196,6 @@ router.get("/comments", async (req, res) => {
     if (req.query.token) {
       const verify = jwt.verify(req.query.token, "auth");
       const publicationId = req.query.id;
-      console.log(publicationId)
       if (verify) {
         const allComments = await Comment.find({ publicationId });
         let result = [];
@@ -158,7 +234,7 @@ router.post("/comment", async (req, res) => {
       const verify = jwt.verify(req.body.token, "auth");
       if (verify) {
         const { publicationId, text } = req.body;
-        const userId = verify.userId
+        const userId = verify.userId;
 
         if (publicationId && text) {
           await new Comment({
