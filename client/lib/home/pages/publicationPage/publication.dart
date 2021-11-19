@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import '../profile.dart';
+import './comments.dart';
 
 class Publication extends StatefulWidget {
   var publicationId;
@@ -282,12 +283,15 @@ class RenderPublication extends StatelessWidget {
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
-                        // horizontal: 10,
-                      ),
+                          // horizontal: 10,
+                          ),
                       child: FlatButton(
                         padding: const EdgeInsets.all(0),
                         onPressed: () async {
-
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => Comment(publicationId)),
+                          );
                         },
                         child: const Icon(
                           Icons.mode_comment_outlined,
@@ -298,13 +302,11 @@ class RenderPublication extends StatelessWidget {
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
-                        // horizontal: 10,
-                      ),
+                          // horizontal: 10,
+                          ),
                       child: FlatButton(
                         padding: const EdgeInsets.all(0),
-                        onPressed: () async {
-
-                        },
+                        onPressed: () async {},
                         child: const Icon(
                           Icons.send_outlined,
                           size: 25.0,

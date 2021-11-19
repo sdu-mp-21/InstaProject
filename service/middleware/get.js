@@ -119,13 +119,31 @@ router.get("/comments", async (req, res) => {
     if (req.query.token) {
       const verify = jwt.verify(req.query.token, "auth");
       const publicationId = req.query.id;
+      console.log(publicationId)
       if (verify) {
         const allComments = await Comment.find({ publicationId });
+        let result = [];
 
-        res.send(allComments);
+        for (let comment of allComments) {
+          const user = await User.findOne({ userId: comment.userId });
+
+          result.push({
+            publicationId,
+            userId: user.userId,
+            commentId: comment.commentId,
+            text: comment.text,
+            created_at: comment.created_at,
+            avatar: user.avatar,
+            login: user.login,
+          });
+        }
+
+        res.send({ comments: result });
       } else {
         res.status(401).send();
       }
+    } else {
+      res.status(401).send();
     }
   } catch (e) {
     console.log(e);
@@ -136,18 +154,28 @@ router.get("/comments", async (req, res) => {
 
 router.post("/comment", async (req, res) => {
   try {
-    const { publicationId, userId, text } = req.body;
+    if (req.body.token) {
+      const verify = jwt.verify(req.body.token, "auth");
+      if (verify) {
+        const { publicationId, text } = req.body;
+        const userId = verify.userId
 
-    if (publicationId && userId && text) {
-      await new Comment({
-        publicationId,
-        userId,
-        text,
-      }).save();
+        if (publicationId && text) {
+          await new Comment({
+            publicationId,
+            userId,
+            text,
+          }).save();
 
-      res.status(200).send();
+          res.status(200).send();
+        } else {
+          res.status(400).send();
+        }
+      } else {
+        res.status(401).send({ message: "Укажите токен" });
+      }
     } else {
-      res.status(400).send();
+      res.status(401).send();
     }
   } catch (e) {
     console.log(e);

@@ -92,7 +92,7 @@ class Home extends StatelessWidget {
           // action button
           IconButton(
           icon: Icon( Icons.send ),
-        onPressed: () {
+            onPressed: () {
             Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => direct() ),); },
