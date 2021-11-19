@@ -1,6 +1,7 @@
 const router = require('express').Router()
 const jwt = require('jsonwebtoken')
 const fs = require('fs')
+const config = require('config')
 
 const User = require('../models/users')
 const Like = require('../models/likes')
@@ -32,7 +33,7 @@ router.get('/profile', async (req, res) => {
 
                     pubs.push(
                         {
-                            src: `http://localhost:5000/get/images/${publication.publicationId}`,
+                            src: `${config.get('service.url')}get/images/${publication.publicationId}`,
                             publicationId: publication.publicationId
                         })
                 } catch (e) {
@@ -91,7 +92,7 @@ router.get('/publication', async (req, res) => {
             likes,
             comments,
             description: publication.desctiption || '',
-            src: 'http://localhost:5000/get/images/' + publication.publicationId,
+            src: `${config.get('service.url')}get/images/` + publication.publicationId,
             avatar: user.avatar,
             login: user.login,
             isLiked: isLiked !== null ? true : false
@@ -136,7 +137,7 @@ router.get('/publications', async (req, res) => {
                         likes,
                         comments,
                         description: publication.desctiption || '',
-                        src: 'http://localhost:5000/get/images/' + publication.publicationId,
+                        src: `${config.get('service.url')}get/images/` + publication.publicationId,
                         avatar: user.avatar,
                         login: user.login,
                         isLiked: isLiked !== null ? true : false
