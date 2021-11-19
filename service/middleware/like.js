@@ -1,89 +1,86 @@
-const express = require('express')
-const router = express.Router()
-const jwt = require('jsonwebtoken')
+const express = require("express");
+const router = express.Router();
+const jwt = require("jsonwebtoken");
 
-const Publication = require('../models/publications')
-const Like = require('../models/likes')
-const User = require('../models/users')
+const Publication = require("../models/publications");
+const Like = require("../models/likes");
+const User = require("../models/users");
 
-router.post('/', async (req, res) => {
-    try {
-        const verifyToken = jwt.verify(req.query.token, 'auth')
+router.post("/", async (req, res) => {
+  try {
+    const verifyToken = jwt.verify(req.query.token, "auth");
 
-        if (verifyToken) {
+    if (verifyToken) {
+      const { publicationId } = req.body;
+      const userId = verifyToken.userId;
 
-            const { publicationId } = req.body
-            const userId = verifyToken.userId
+      const publication = await Publication.findOne({ publicationId });
 
-            const publication = await Publication.findOne({ publicationId })
+      if (publication) {
+        const like = await Like.findOne({ publicationId, userId });
 
-            if (publication) {
-
-                const like = await Like.findOne({ publicationId, userId })
-
-                if (!like) {
-                    await new Like({
-                        userId,
-                        publicationId
-                    }).save()
-                } else {
-                    await Like.deleteOne({ likeId: like.likeId })
-                }
-
-                res.status(200).send()
-
-            } else {
-                res.status(400).send()
-            }
-
+        if (!like) {
+          await new Like({
+            userId,
+            publicationId,
+          }).save();
         } else {
-            res.status(401).send()
+          await Like.deleteOne({ likeId: like.likeId });
         }
-    } catch (e) {
-        console.log(e)
-        res.status(500).send()
+
+        res.status(200).send();
+      } else {
+        res.status(400).send();
+      }
+    } else {
+      res.status(401).send();
     }
-})
+  } catch (e) {
+    console.log(e);
+    res.status(500).send();
+  }
+});
 
-router.get('/', async (req, res) => {
-    try {
-        // const verifyToken = jwt.verify(req.query.token, 'auth')
-        const verifyToken = true
+router.get("/", async (req, res) => {
+  try {
+    // const verifyToken = jwt.verify(req.query.token, 'auth')
+    const verifyToken = true;
 
-        if (verifyToken) {
+    if (verifyToken) {
+      const { publicationId } = req.query;
 
-            const { publicationId } = req.query
+      const likes = await Like.find({ publicationId });
 
-            const likes = await Like.find({ publicationId })
+      let likesList = [];
+      for (let like of likes) {
+        likesList.push({ userId: like.userId });
+      }
 
-            let likesList = []
-            for (let like of likes) {
-                likesList.push({ userId: like.userId })
-            }
+      if (likes.length > 0) {
+        const users = await User.find(
+          {
+            $or: likesList,
+          },
+          {
+            userId: 1,
+            login: 1,
+            name: 1,
+            surname: 1,
+            avatar: 1,
+          }
+        );
 
-            if (likes.length > 0) {
-                const users = await User.find({
-                    $or: likesList
-                }, {
-                    userId: 1,
-                    login: 1,
-                    name: 1,
-                    surname: 1,
-                    avatar: 1
-                })
-
-                res.send(users)
-            } else {
-                res.send([])
-            }
-
-        } else {
-            res.status(401).send()
-        }
-    } catch (e) {
-        console.log(e)
-        res.status(500).send()
+        res.send(users);
+      } else {
+        res.send([]);
+      }
+    } else {
+      res.status(401).send();
     }
-})
+  } catch (e) {
+    console.log(e);
+    res.status(500).send();
+  }
+});
 
-module.exports = router
+module.exports = router;

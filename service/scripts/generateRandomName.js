@@ -1,13 +1,11 @@
 function generateRandomName(length = 1) {
+  let name = "";
 
-    let name = ''
+  for (let i = 0; i < length; i++) {
+    name += String.fromCharCode(parseInt(Math.random() * 26) + 97);
+  }
 
-    for (let i = 0; i < length; i++) {
-        name += String.fromCharCode(parseInt(Math.random() * 26) + 97)
-    }
-
-    return name
-
+  return name;
 }
 
-module.exports = generateRandomName
+module.exports = generateRandomName;
