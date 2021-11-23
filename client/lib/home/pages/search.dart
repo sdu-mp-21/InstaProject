@@ -157,7 +157,9 @@ class PrintResult extends StatelessWidget {
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => AnotherProfile(result[i]['userId'])),
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    AnotherProfile(result[i]['userId'])),
                           );
                         },
                         child: Text(
