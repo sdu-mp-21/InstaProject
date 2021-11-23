@@ -53,7 +53,7 @@ class Config extends StatelessWidget {
                           width: 20,
                           height: 20,
                         ),
-                        Text('Lesbek Rakhat',style: TextStyle(color: Colors.white),),
+                        Text('Bakytbek Kenzhebekov',style: TextStyle(color: Colors.white),),
 
                    ],
 
