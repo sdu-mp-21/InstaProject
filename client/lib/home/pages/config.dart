@@ -80,7 +80,7 @@ class Config extends StatelessWidget {
                         width: 20,
                         height: 20,
                       ),
-                      Text('Rakhat02',style: TextStyle(color: Colors.white),),
+                      Text('Maha02',style: TextStyle(color: Colors.white),),
 
                     ],
 
