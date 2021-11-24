@@ -325,7 +325,12 @@ router.get("/publications", async (req, res) => {
           });
         }
 
-        res.send(result);
+        const user = await User.findOne(
+          { userId: verify.userId },
+          { login: 1, userId: 1, name: 1, surname: 1, avatar: 1 }
+        );
+
+        res.send({ publications: result, user });
       } else {
         res.send([]);
       }
