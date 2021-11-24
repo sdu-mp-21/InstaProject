@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'pages/addPublication/add.dart';
 import '/home/pages/profile.dart';
 import '/home/pages/search.dart';
-import '/home/pages/home.dart';
+import 'pages/homePages/home.dart';
 
 class HomeElements extends StatelessWidget {
   Widget build(BuildContext context) {

@@ -68,9 +68,6 @@ class _HomeState extends State<Home> {
           ),
         ],
       ),
-
-
-
       body: Container(
         margin: const EdgeInsets.all(16.0),
         child: Column(
