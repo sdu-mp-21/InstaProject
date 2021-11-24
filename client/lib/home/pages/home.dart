@@ -8,42 +8,9 @@ import 'package:http/http.dart' as http;
 import 'direct.dart';
 //import 'package:instagram/home/pages/profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-class Result {
-  // final int userId;
-  // final String avatar;
-  // final String name;
-  // final String surname;
-  // final String login;
-  final List<dynamic> result;
 
-  Result({required this.result});
-
-  factory Result.fromJson(Map<String, dynamic> json) {
-    return Result(
-      // userId: json['userId'],
-      // name: json['name'],
-      // surname: json['surname'],
-      // avatar: json['avatar'],
-      // login: json['login'],
-        result: json['result']);
-  }
-}
 class Home extends StatelessWidget {
-  Future<Result> fetchResult(String query) async {
-    SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
-
-    final response = await http.get(
-      Uri.parse(
-          'http://localhost:5000/search?token=${sharedPrefs.getString(
-              'token')}&q=$query'),
-    );
-
-    if (response.statusCode == 200) {
-      return Result.fromJson(jsonDecode(response.body));
-    } else {
-      throw Exception('Failed to load album');
-    }
-  }
+  
 
   final storyProfile = Expanded(
     child: ListView.builder(
