@@ -9,13 +9,15 @@ import 'direct.dart';
 //import 'package:instagram/home/pages/profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class Home extends StatelessWidget {
-  
+class Home extends StatefulWidget {
+  @override
+  _HomeState createState() => _HomeState();
+}
 
+class _HomeState extends State<Home> {
   final storyProfile = Expanded(
     child: ListView.builder(
       scrollDirection: Axis.horizontal,
-
       itemBuilder: (context, index) =>
           Stack(
             alignment: Alignment.topLeft,
@@ -58,14 +60,14 @@ class Home extends StatelessWidget {
         actions:[
           // action button
           IconButton(
-          icon: Icon( Icons.send ),
+            icon: Icon( Icons.send ),
             onPressed: () {
-            Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => direct() ),); },
-      ),
-      ],
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => direct() ),); },
           ),
+        ],
+      ),
 
 
 
@@ -77,40 +79,10 @@ class Home extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             storyProfile,
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16.0, 16.0, 8.0, 16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        height: 40.0, width: 40.0,
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
-                              fit: BoxFit.fill,
-                              image: NetworkImage(
-                                  'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Circle-icons-profile.svg/1200px-Circle-icons-profile.svg.jpg')
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 10.0,
-                      ),
-                      Text("Temporary", style: const TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.white),),
-                    ],
-                  ),
-                  const IconButton(
-                    icon: Icon(Icons.more_vert),
-                    onPressed: null,
-                  )
                 ],
               ),
             ),
-          ],
-        ),
-      ),);
+
+        );
   }
 }
