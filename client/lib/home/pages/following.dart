@@ -4,57 +4,57 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import '/home/pages/config.dart';
 import 'package:http/http.dart' as http;
+import 'anotherProfile.dart';
 import 'publicationPage/publication.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-Future<Following> fetchFollowing(int userId) async {
+Future<FollowingModel> fetchFollowing() async {
   SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
 
-  final response = await http.get(
-    Uri.parse(
-        'http://localhost:5000/get/another/profile?token=${sharedPrefs.getString('token')}&id=$userId'),
-  );
+  final response = await http.get(Uri.parse(
+    'http://localhost:5000/get/following?token=${sharedPrefs.getString('token')}',
+  ));
 
   if (response.statusCode == 200) {
-    return Following.fromJson(jsonDecode(response.body));
+    return FollowingModel.fromJson(jsonDecode(response.body));
   } else {
-    throw Exception('Failed to load album');
+    throw Exception('Failed to load following');
   }
 }
 
-class Following {
-  final List<dynamic> data;
+class FollowingModel {
+  final List<dynamic> followings;
 
-  Following({required this.data});
+  FollowingModel({required this.followings});
 
-  factory Following.fromJson(Map<String, dynamic> json) {
-    return Following(data: json['data']);
+  factory FollowingModel.fromJson(Map<String, dynamic> json) {
+    return FollowingModel(followings: json['followings']);
   }
 }
 
-class AnotherProfile extends StatefulWidget {
+class Following extends StatefulWidget {
   int userId = 0;
 
-  AnotherProfile(this.userId);
+  Following(this.userId, {Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-    return StateProfile(userId);
+    return StateFollowing(userId);
   }
 }
 
-class StateProfile extends State<AnotherProfile> {
+class StateFollowing extends State<Following> {
   int userId = 0;
 
-  StateProfile(this.userId);
+  StateFollowing(this.userId);
 
-  late Future<Following> _futureUser;
+  late Future<FollowingModel> _futureUser;
   List data = [];
 
   @override
   void initState() {
     super.initState();
-    _futureUser = fetchFollowing(userId);
+    _futureUser = fetchFollowing();
   }
 
   @override
@@ -67,18 +67,18 @@ class StateProfile extends State<AnotherProfile> {
       home: Scaffold(
         body: Container(
           alignment: Alignment.center,
-          child: FutureBuilder<Following>(
+          child: FutureBuilder<FollowingModel>(
             future: _futureUser,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
                 if (snapshot.hasData) {
                   _futureUser.then((res) {
                     setState(() {
-                      data = res.data;
+                      data = res.followings;
                     });
                   });
 
-                  return GenerateProfile(data);
+                  return GenerateFollowing(data);
                 } else if (snapshot.hasError) {
                   return Text('${snapshot.error}');
                 }
@@ -93,10 +93,10 @@ class StateProfile extends State<AnotherProfile> {
   }
 }
 
-class GenerateProfile extends StatelessWidget {
+class GenerateFollowing extends StatelessWidget {
   List data = [];
 
-  GenerateProfile(this.data);
+  GenerateFollowing(this.data, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -104,8 +104,83 @@ class GenerateProfile extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.black,
       body: Column(
-        children: [
+        children: printItems(data, context),
+      ),
+    );
+  }
 
+  List<Widget> printItems(List items, BuildContext context) {
+    List<Widget> result = [];
+
+    for (int i = 0; i < items.length; i++) {
+      result.add(getItem(
+          items[i]['login'],
+          items[i]['userId'],
+          items[i]['avatar'],
+          items[i]['name'] + ' ' + items[i]['surname'],
+          context));
+    }
+
+    return result;
+  }
+
+  Widget getItem(String login, int userId, String avatar, String fullName, BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.only(left: 20, top: 10, bottom: 10),
+      child: Row(
+        children: [
+          SizedBox(
+            width: 50,
+            height: 50,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(90),
+              child: Image.network(
+                avatar,
+                width: 50,
+                height: 50,
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+            child: Column(
+              children: [
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AnotherProfile(userId),
+                        ),
+                      );
+                    },
+                    child: Text(
+                      login,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      fullName,
+                      style: const TextStyle(
+                        color: Colors.grey,
+                      ),
+                      textAlign: TextAlign.left,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );

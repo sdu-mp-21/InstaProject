@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import '/home/pages/config.dart';
+import './following.dart';
 import 'package:http/http.dart' as http;
 import 'publicationPage/publication.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -120,8 +121,8 @@ class StateProfile extends State<Profile> {
                     });
                   });
 
-                  return GenerateProfile(
-                      name, surname, aboutMe, avatar, publications, countSubscribers, countSubscriptions);
+                  return GenerateProfile(name, surname, aboutMe, avatar,
+                      publications, countSubscribers, countSubscriptions);
                 } else if (snapshot.hasError) {
                   return Text('${snapshot.error}');
                 }
@@ -145,8 +146,8 @@ class GenerateProfile extends StatelessWidget {
   List subscribers = [];
   List subscriptions = [];
 
-  GenerateProfile(
-      this.name, this.surname, this.aboutMe, this.avatar, this.publications, this.subscribers, this.subscriptions);
+  GenerateProfile(this.name, this.surname, this.aboutMe, this.avatar,
+      this.publications, this.subscribers, this.subscriptions);
 
   @override
   Widget build(BuildContext context) {
@@ -198,9 +199,7 @@ class GenerateProfile extends StatelessWidget {
                         Container(
                           padding: const EdgeInsets.only(left: 20),
                           child: TextButton(
-                            onPressed: () {
-                              print('open page followers');
-                            },
+                            onPressed: () {},
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -219,7 +218,11 @@ class GenerateProfile extends StatelessWidget {
                           margin: const EdgeInsets.only(left: 20),
                           child: TextButton(
                             onPressed: () {
-                              print('open page following');
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Following(0)),
+                              );
                             },
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
