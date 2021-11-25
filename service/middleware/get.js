@@ -276,6 +276,35 @@ router.post("/delete/comment", async (req, res) => {
   }
 });
 
+router.get("/following", async (req, res) => {
+  try {
+    const verify = jwt.verify(req.query.token, "auth");
+    if (verify) {
+      const peopleIFollow = await Subscription.find({
+        srcUserId: verify.userId,
+      });
+      const mongoQuery = [];
+      for (let people of peopleIFollow) {
+        mongoQuery.push({
+          userId: people.destUserId,
+        });
+      }
+
+      const followings = await User.find(
+        { $or: mongoQuery },
+        { userId: 1, avatar: 1, login: 1, name: 1, surname: 1 }
+      );
+
+      res.send({ followings });
+    } else {
+      res.status(401).send();
+    }
+  } catch (e) {
+    console.log(e);
+    res.status(500).send();
+  }
+});
+
 router.get("/publications", async (req, res) => {
   try {
     const verify = jwt.verify(req.query.token, "auth");
