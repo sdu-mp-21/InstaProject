@@ -13,7 +13,8 @@ dependencies:
   flutter:
       sdk: flutter
   camera:
-  path_provider:
+  path_provider: ^2.0.6
+  image_picker: ^0.8.4+4
   sqflite:
   path:
   flutter_spinkit: ^5.1.0
@@ -22,6 +23,7 @@ dependencies:
   file_picker:
   cupertino_icons: ^1.0.2
   storage_path: ^0.2.0
+  
 
 dev_dependencies:
   flutter_test:

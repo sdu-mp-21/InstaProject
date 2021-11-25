@@ -1,8 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'editfields.dart';
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
 
-class Config extends StatelessWidget {
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+
+class Config extends StatefulWidget {
+  const Config({Key? key}) : super(key: key);
+
+  @override
+  _ConfigState createState() => _ConfigState();
+}
+
+class _ConfigState extends State<Config> {
+  final myController = TextEditingController();
+
+  get http => null;
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    myController.dispose();
+    super.dispose();
+  }
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -27,13 +53,41 @@ class Config extends StatelessWidget {
               backgroundImage: AssetImage('assets/IMG_5026.JPG'),
               radius: 50,
             ),
-            TextButton(
-              onPressed: () {},
-              child: Text(
-                'Change Profile Photo',
-                style: TextStyle(color: Colors.blue),
-              ),
-            ),
+    TextButton(
+    onPressed: () async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+    type: FileType.custom,
+    allowedExtensions: ['jpg', 'png', 'jpeg'],
+    );
+
+    if (result != null) {
+    Uint8List? fileBytes = result.files.first.bytes;
+
+    SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
+
+    Map data = {
+    'image': fileBytes,
+    'token': sharedPrefs.getString('token')
+    };
+    //encode Map to JSON
+    var body = json.encode(data);
+
+    var response = await http.post(
+    Uri.parse('http://localhost:5000/upload/publication'),
+    body: body,
+    headers: {
+    'Content-Type': 'application/json',
+    },
+    );
+    }
+    },
+    child: const Text(
+    'Change Profile Photo',
+    style: TextStyle(color: Colors.blue),
+    ),
+    ),
+
+
             InkWell(
               onTap: () {
                 Navigator.push(
@@ -54,7 +108,7 @@ class Config extends StatelessWidget {
                       height: 20,
                     ),
                     Text(
-                      'Bakytbek Kenzhebekov',
+                      myController.text,
                       style: TextStyle(color: Colors.white),
                     ),
                   ],
@@ -148,3 +202,7 @@ class Config extends StatelessWidget {
     );
   }
 }
+
+
+
+
