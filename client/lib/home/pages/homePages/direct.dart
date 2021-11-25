@@ -2,6 +2,8 @@
 
 //import 'dart:ffi';
 
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'dart:convert';
 
@@ -27,7 +29,14 @@ Future fetch() async {
   print(response.body);
 }
 
-class _DirectState extends State<Direct> {
+class _DirectState extends State<Direct> with TickerProviderStateMixin{
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 3, vsync: this);
+  }
   @override
   Widget build(BuildContext context) {
     fetch();
@@ -41,30 +50,199 @@ class _DirectState extends State<Direct> {
         actions: <Widget>[
           Padding(
             padding: EdgeInsets.only(right: 20.0),
-            child: Icon(
-              Icons.videocam,
-              size: 26.0,),
+            child: IconButton(
+              icon:Icon(Icons.videocam,size: 26.0,),
+              onPressed: () {},),
           ),
           Padding(
             padding: EdgeInsets.only(right: 20.0),
-            child: Icon(
-              Icons.message,
-              size: 26.0,),
+            child: IconButton(
+              icon:Icon(Icons.message,size: 26.0,),
+              onPressed: () {},),
           ),
         ],
-      ),
-      body: SingleChildScrollView(child: Column(
-        children:[ Row(
-          children: [
-            Text("Все",style: TextStyle(color: Colors.white),),
-            Text("Звонки",style: TextStyle(color: Colors.white),),
-            Text("Запросы",style: TextStyle(color: Colors.white),),
+      bottom: TabBar(
+          controller: _tabController,
+          tabs: <Widget>[
+            Tab(text: "Все",),
+            Tab(text: "Звонки",),
+            Tab(text: "Запросы",)
           ],
         ),
-      ],
-    )
-    ),
+      ),
+      body: TabBarView(
+        controller: _tabController, children: <Widget>[
+          Column(
+            children: <Widget>[
+              Padding(padding: EdgeInsets.only(top: 10.0,left: 10.0,right: 10.0),child:
+                TextField(
+                decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.search, color: Colors.white),
+                    hintText: 'Поиск',
+                    hintStyle: TextStyle(color: Colors.white, fontSize: 18),
+                filled: true,
+                fillColor: Colors.black,
+                 border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide.none,
+                )
+            ),
+          ),
+              ),
+              Card(color: Colors.black,
+                child: Column(mainAxisSize: MainAxisSize.min,children: <Widget>[
+                  ListTile(
+                    leading:  Container(
+                      width: 60.0,
+                      height: 60.0,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          image: NetworkImage(
+                              'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Circle-icons-profile.svg/1200px-Circle-icons-profile.svg.jpg'),
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                      margin: const EdgeInsets.symmetric(horizontal: 8.0),
+                    ),
+                    title: Text("login",style: TextStyle(color: Colors.white),),
+                    subtitle: Text("message of user",style: TextStyle(color: Colors.white),),
+                  trailing: IconButton(onPressed: null,icon:Icon(Icons.videocam,color: Colors.white)),),
+                ],),
+              ),
+              Card(color: Colors.black,
+                child: Column(mainAxisSize: MainAxisSize.min,children: <Widget>[
+                  ListTile(
+                    leading:  Container(
+                      width: 60.0,
+                      height: 60.0,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          image: NetworkImage(
+                              'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Circle-icons-profile.svg/1200px-Circle-icons-profile.svg.jpg'),
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                      margin: const EdgeInsets.symmetric(horizontal: 8.0),
+                    ),
+                    title: Text("login",style: TextStyle(color: Colors.white),),
+                    subtitle: Text("message of user",style: TextStyle(color: Colors.white),),
+                    trailing: IconButton(onPressed: null,icon:Icon(Icons.videocam,color: Colors.white)),),
+                ],),
+              ),
+              Card(color: Colors.black,
+                child: Column(mainAxisSize: MainAxisSize.min,children: <Widget>[
+                  ListTile(
+                    leading:  Container(
+                      width: 60.0,
+                      height: 60.0,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          image: NetworkImage(
+                              'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Circle-icons-profile.svg/1200px-Circle-icons-profile.svg.jpg'),
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                      margin: const EdgeInsets.symmetric(horizontal: 8.0),
+                    ),
+                    title: Text("login",style: TextStyle(color: Colors.white),),
+                    subtitle: Text("message of user",style: TextStyle(color: Colors.white),),
+                    trailing: IconButton(onPressed: null,icon:Icon(Icons.videocam,color: Colors.white)),),
+                ],),
+              ),
+              Card(color: Colors.black,
+                child: Column(mainAxisSize: MainAxisSize.min,children: <Widget>[
+                  ListTile(
+                    leading:  Container(
+                      width: 60.0,
+                      height: 60.0,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          image: NetworkImage(
+                              'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Circle-icons-profile.svg/1200px-Circle-icons-profile.svg.jpg'),
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                      margin: const EdgeInsets.symmetric(horizontal: 8.0),
+                    ),
+                    title: Text("login",style: TextStyle(color: Colors.white),),
+                    subtitle: Text("message of user",style: TextStyle(color: Colors.white),),
+                    trailing: IconButton(onPressed: null,icon:Icon(Icons.videocam,color: Colors.white)),),
+                ],),
+              ),
+              Card(color: Colors.black,
+                child: Column(mainAxisSize: MainAxisSize.min,children: <Widget>[
+                  ListTile(
+                    leading:  Container(
+                      width: 60.0,
+                      height: 60.0,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          image: NetworkImage(
+                              'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Circle-icons-profile.svg/1200px-Circle-icons-profile.svg.jpg'),
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                      margin: const EdgeInsets.symmetric(horizontal: 8.0),
+                    ),
+                    title: Text("login",style: TextStyle(color: Colors.white),),
+                    subtitle: Text("message of user",style: TextStyle(color: Colors.white),),
+                    trailing: IconButton(onPressed: null,icon:Icon(Icons.videocam,color: Colors.white)),),
+                ],),
+              ),
+              Card(color: Colors.black,
+                child: Column(mainAxisSize: MainAxisSize.min,children: <Widget>[
+                  ListTile(
+                    leading:  Container(
+                      width: 60.0,
+                      height: 60.0,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          image: NetworkImage(
+                              'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Circle-icons-profile.svg/1200px-Circle-icons-profile.svg.jpg'),
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                      margin: const EdgeInsets.symmetric(horizontal: 8.0),
+                    ),
+                    title: Text("login",style: TextStyle(color: Colors.white),),
+                    subtitle: Text("message of user",style: TextStyle(color: Colors.white),),
+                    trailing: IconButton(onPressed: null,icon:Icon(Icons.videocam,color: Colors.white)),),
+                ],),
+              ),
+              Card(color: Colors.black,
+                child: Column(mainAxisSize: MainAxisSize.min,children: <Widget>[
+                  ListTile(
+                    leading:  Container(
+                      width: 60.0,
+                      height: 60.0,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          image: NetworkImage(
+                              'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Circle-icons-profile.svg/1200px-Circle-icons-profile.svg.jpg'),
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                      margin: const EdgeInsets.symmetric(horizontal: 8.0),
+                    ),
+                    title: Text("login",style: TextStyle(color: Colors.white),),
+                    subtitle: Text("message of user",style: TextStyle(color: Colors.white),),
+                    trailing: IconButton(onPressed: null,icon:Icon(Icons.videocam,color: Colors.white)),),
+                ],),
+              ),
 
+            ],
+          ),
+               Center(child: Text("Calls",style: TextStyle(color: Colors.white),)),
+              Center(child: Text("Responces",style: TextStyle(color: Colors.white),),)
+    ],
+      ),
     );
   }
 }
