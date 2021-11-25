@@ -305,6 +305,24 @@ router.get("/following", async (req, res) => {
   }
 });
 
+router.get("/like/check", async (req, res) => {
+  try {
+    const verify = jwt.verify(req.query.token, "auth");
+    if (verify) {
+      const userId = verify.userId;
+      const publicationId = req.query.publicationId;
+
+      const isLiked = await Like.findOne({ userId, publicationId });
+      res.send({ isLiked: isLiked ? true : false });
+    } else {
+      res.status(401).send();
+    }
+  } catch (e) {
+    console.log(e);
+    res.status(500).send();
+  }
+});
+
 router.get("/publications", async (req, res) => {
   try {
     const verify = jwt.verify(req.query.token, "auth");

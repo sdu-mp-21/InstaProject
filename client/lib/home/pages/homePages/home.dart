@@ -23,7 +23,6 @@ class _HomeState extends State<Home> {
 
   Future fetch() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    print(sharedPreferences.getString('token'));
     final responce = await http.get(Uri.parse(
         'http://localhost:5000/get/publications?token=${sharedPreferences.getString('token')}'));
 //    print(responce.body);

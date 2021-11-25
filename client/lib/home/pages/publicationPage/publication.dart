@@ -152,11 +152,7 @@ class RenderPublication extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Icon likeIcon = Icon(
-      isLiked ? Icons.favorite : Icons.favorite_border,
-      size: 25.0,
-      color: isLiked ? Colors.red : Colors.white,
-    );
+    // print(isLiked);
 
     return SingleChildScrollView(
       child: Column(
@@ -263,22 +259,8 @@ class RenderPublication extends StatelessWidget {
                           ),
                       child: FlatButton(
                         padding: const EdgeInsets.all(0),
-                        onPressed: () async {
-                          SharedPreferences sharedPrefs =
-                              await SharedPreferences.getInstance();
-
-                          Map data = {'publicationId': publicationId};
-                          var body = json.encode(data);
-                          http.post(
-                            Uri.parse(
-                                'http://localhost:5000/like?token=${sharedPrefs.getString('token')}'),
-                            body: body,
-                            headers: {
-                              'Content-Type': 'application/json',
-                            },
-                          );
-                        },
-                        child: likeIcon,
+                        onPressed: () {},
+                        child: LikeIcon(isLiked, publicationId),
                       ),
                     ),
                     Padding(
@@ -290,7 +272,8 @@ class RenderPublication extends StatelessWidget {
                         onPressed: () async {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => Comment(publicationId)),
+                            MaterialPageRoute(
+                                builder: (context) => Comment(publicationId)),
                           );
                         },
                         child: const Icon(
@@ -325,6 +308,63 @@ class RenderPublication extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class LikeIcon extends StatefulWidget {
+  bool isLiked = false;
+  int publicationId = 0;
+
+  LikeIcon(this.isLiked, this.publicationId);
+
+  @override
+  LikeIconState createState() => LikeIconState(isLiked, publicationId);
+}
+
+class LikeIconState extends State<LikeIcon> {
+  bool isLiked;
+  int publicationId = 0;
+
+  LikeIconState(this.isLiked, this.publicationId);
+
+  void _handleTap() {
+    setState(() {
+      isLiked = !isLiked;
+    });
+  }
+
+  void fetchIsLiked(int publicationId) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var response = await http.post(Uri.parse('http://localhost:5000/get/like/check/?token=${sharedPreferences.getString('token')}&publicationId=${publicationId}'));
+
+    print(response.body);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      onPressed: () async {
+        SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
+
+        Map data = {'publicationId': publicationId};
+        var body = json.encode(data);
+        http.post(
+          Uri.parse(
+              'http://localhost:5000/like?token=${sharedPrefs.getString('token')}'),
+          body: body,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        );
+
+        _handleTap();
+      },
+      icon: Icon(
+        isLiked ? Icons.favorite : Icons.favorite_border,
+        size: 25.0,
+        color: isLiked ? Colors.red : Colors.white,
       ),
     );
   }
