@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
@@ -13,11 +14,13 @@ import 'direct.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Home extends StatefulWidget {
+
   @override
   _HomeState createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
+
   Future fetch() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     print(sharedPreferences.getString('token'));
@@ -71,7 +74,7 @@ class _HomeState extends State<Home> {
         backgroundColor: Colors.black,
         elevation: 1.0,
         centerTitle: true,
-        leading: Icon(Icons.camera_alt),
+        leading:GestureDetector(onTap: (){} ,child:Icon(Icons.camera_alt)),
         title: const Text("Instagram"),
         actions: [
           // action button
