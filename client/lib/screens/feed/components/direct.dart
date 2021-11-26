@@ -204,7 +204,7 @@ class _DirectState extends State<Direct> with TickerProviderStateMixin {
           )),
           const Center(
             child: Text(
-              "Responces",
+              "Responses",
               style: TextStyle(color: Colors.white),
             ),
           )

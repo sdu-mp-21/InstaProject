@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:untitled/screens/config/config_screen.dart';
-import 'package:untitled/screens/following/following_screen.dart';
+import 'package:untitled/screens/followingAndFollowers/following_and_followers_screen.dart';
 import 'package:untitled/screens/profile/components/publication_card.dart';
 import 'package:untitled/screens/profile/models/User.dart';
 
@@ -39,6 +39,7 @@ class StateProfile extends State<ProfileScreen> {
   String surname = '';
   String aboutMe = '';
   String avatar = '';
+  String login = '';
   List publications = [];
   List countSubscribers = [];
   List countSubscriptions = [];
@@ -75,13 +76,14 @@ class StateProfile extends State<ProfileScreen> {
                           publications = data.publications;
                           countSubscribers = data.subscribers;
                           countSubscriptions = data.subscriptions;
+                          login = data.login;
                         },
                       );
                     },
                   );
 
                   return GenerateProfile(name, surname, aboutMe, avatar,
-                      publications, countSubscribers, countSubscriptions);
+                      publications, countSubscribers, countSubscriptions,login);
                 } else if (snapshot.hasError) {
                   return Text('${snapshot.error}');
                 }
@@ -101,12 +103,13 @@ class GenerateProfile extends StatelessWidget {
   String surname = '';
   String aboutMe = '';
   String avatar = '';
+  String login = '';
   List publications = [];
   List subscribers = [];
   List subscriptions = [];
 
   GenerateProfile(this.name, this.surname, this.aboutMe, this.avatar,
-      this.publications, this.subscribers, this.subscriptions,
+      this.publications, this.subscribers, this.subscriptions, this.login,
       {Key? key})
       : super(key: key);
 
@@ -162,7 +165,14 @@ class GenerateProfile extends StatelessWidget {
                         Container(
                           padding: const EdgeInsets.only(left: 20),
                           child: TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => FollowingAndFollowersScreen(login, 0),
+                                ),
+                              );
+                            },
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -188,7 +198,7 @@ class GenerateProfile extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => FollowingScreen(),
+                                  builder: (context) => FollowingAndFollowersScreen(login, 1),
                                 ),
                               );
                             },

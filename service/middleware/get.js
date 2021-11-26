@@ -276,26 +276,42 @@ router.post("/delete/comment", async (req, res) => {
   }
 });
 
-router.get("/following", async (req, res) => {
+router.get("/followers", async (req, res) => {
   try {
     const verify = jwt.verify(req.query.token, "auth");
     if (verify) {
       const peopleIFollow = await Subscription.find({
         srcUserId: verify.userId,
       });
-      const mongoQuery = [];
+      const peopleFollowToMe = await Subscription.find({
+        destUserId: verify.userId,
+      });
+
+      const mongoQueryFollowing = [];
       for (let people of peopleIFollow) {
-        mongoQuery.push({
+        mongoQueryFollowing.push({
           userId: people.destUserId,
         });
       }
 
-      const followings = await User.find(
-        { $or: mongoQuery },
+      const mongoQueryFollowers = [];
+      for (let people of peopleFollowToMe) {
+        mongoQueryFollowers.push({
+          userId: people.srcUserId,
+        });
+      }
+
+      const following = await User.find(
+        { $or: mongoQueryFollowing },
         { userId: 1, avatar: 1, login: 1, name: 1, surname: 1 }
       );
 
-      res.send({ followings });
+      const followers = await User.find(
+        { $or: mongoQueryFollowers },
+        { userId: 1, avatar: 1, login: 1, name: 1, surname: 1 }
+      );
+
+      res.send({ following, followers });
     } else {
       res.status(401).send();
     }

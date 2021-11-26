@@ -76,9 +76,11 @@ class MyPagesState extends State<MyPages> {
               backgroundColor: Colors.black),
         ],
         selectedItemColor: Colors.grey,
+        backgroundColor: Colors.black,
         unselectedItemColor: Colors.white,
         onTap: onItemTapped,
         currentIndex: selectedIndex,
+        type: BottomNavigationBarType.fixed,
       ),
     );
   }
