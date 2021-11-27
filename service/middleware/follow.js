@@ -12,7 +12,6 @@ const Subscription = require("../models/subscriptions");
 router.post("/", async (req, res) => {
   try {
     const { id, token } = req.body;
-    console.log(req.body);
 
     if (token) {
       const verify = jwt.verify(token, "auth");
@@ -20,32 +19,32 @@ router.post("/", async (req, res) => {
       if (verify) {
         if (id) {
           const userId = verify.userId;
-          console.log(id);
-
-          const subscription = await Subscription.findOne({
-            srcUserId: userId,
-            destUserId: id,
-          });
-
-          let isSubscribe = false;
-
-          if (subscription) {
-            await Subscription.deleteMany({
+          if (id !== userId) {
+            const subscription = await Subscription.findOne({
               srcUserId: userId,
               destUserId: id,
             });
+
+            let isSubscribe = false;
+
+            if (subscription) {
+              await Subscription.deleteMany({
+                srcUserId: userId,
+                destUserId: id,
+              });
+            } else {
+              await new Subscription({
+                srcUserId: userId,
+                destUserId: id,
+              }).save();
+
+              isSubscribe = true;
+            }
+
+            res.status(200).send({ isSubscribe });
           } else {
-            await new Subscription({
-              srcUserId: userId,
-              destUserId: id,
-            }).save();
-
-            isSubscribe = true;
+            res.status(400).send();
           }
-
-          console.log(subscription, isSubscribe);
-
-          res.status(200).send({ isSubscribe });
         } else {
           res.status(400).send();
         }

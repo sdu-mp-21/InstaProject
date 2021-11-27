@@ -306,7 +306,7 @@ router.get("/followers", async (req, res) => {
       following = await User.find(
         { $or: mongoQueryFollowing },
         { userId: 1, avatar: 1, login: 1, name: 1, surname: 1 }
-      );
+      ).sort({ createdAt: -1 });
     }
 
     let followers = [];
@@ -314,7 +314,7 @@ router.get("/followers", async (req, res) => {
       followers = await User.find(
         { $or: mongoQueryFollowers },
         { userId: 1, avatar: 1, login: 1, name: 1, surname: 1 }
-      );
+      ).sort({ createdAt: -1 });
     }
 
     res.send({ following, followers });
