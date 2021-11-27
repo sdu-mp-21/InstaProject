@@ -4,6 +4,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 class Direct extends StatefulWidget {
+  String login = '';
+  int index = 0;
   @override
   _DirectState createState() => _DirectState();
 }
@@ -19,6 +21,8 @@ Future fetch() async {
 
 class _DirectState extends State<Direct> with TickerProviderStateMixin {
   late TabController _tabController;
+
+
 
   @override
   void initState() {
