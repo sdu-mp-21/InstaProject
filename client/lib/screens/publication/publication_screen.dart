@@ -53,43 +53,37 @@ class PublicationScreenState extends State<PublicationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        scaffoldBackgroundColor: const Color.fromRGBO(0, 0, 0, 1.0),
-      ),
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: FutureBuilder<PublicationModel>(
-          future: futurePublications,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              if (snapshot.hasData) {
-                futurePublications.then((data) => {
-                  setState(() {
-                    publicationId = data.publicationId;
-                    userId = data.userId;
-                    likes = data.likes;
-                    comments = data.comments;
-                    description = data.description;
-                    src = data.src;
-                    login = data.login;
-                    avatar = data.avatar;
-                    isLiked = data.isLiked;
-                  })
-                });
+    return Scaffold(
+      body: FutureBuilder<PublicationModel>(
+        future: futurePublications,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.hasData) {
+              futurePublications.then((data) => {
+                    setState(() {
+                      publicationId = data.publicationId;
+                      userId = data.userId;
+                      likes = data.likes;
+                      comments = data.comments;
+                      description = data.description;
+                      src = data.src;
+                      login = data.login;
+                      avatar = data.avatar;
+                      isLiked = data.isLiked;
+                    })
+                  });
 
-                return RenderPublication(publicationId, userId, likes, comments,
-                    description, src, login, avatar, isLiked);
-              } else if (snapshot.hasError) {
-                return Text('${snapshot.error}');
-              }
+              return RenderPublication(publicationId, userId, likes, comments,
+                  description, src, login, avatar, isLiked);
+            } else if (snapshot.hasError) {
+              return Text('${snapshot.error}');
             }
+          }
 
-            return Container(
-                alignment: Alignment.center,
-                child: const CircularProgressIndicator());
-          },
-        ),
+          return Container(
+              alignment: Alignment.center,
+              child: const CircularProgressIndicator());
+        },
       ),
     );
   }
@@ -124,12 +118,7 @@ class RenderPublication extends StatelessWidget {
               children: [
                 FlatButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ProfileScreen(),
-                      ),
-                    );
+                    Navigator.pop(context);
                   },
                   child: const Icon(
                     Icons.arrow_back,
@@ -213,8 +202,7 @@ class RenderPublication extends StatelessWidget {
                 Row(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.symmetric(
-                      ),
+                      padding: const EdgeInsets.symmetric(),
                       child: FlatButton(
                         padding: const EdgeInsets.all(0),
                         onPressed: () {},
@@ -222,8 +210,7 @@ class RenderPublication extends StatelessWidget {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(
-                      ),
+                      padding: const EdgeInsets.symmetric(),
                       child: FlatButton(
                         padding: const EdgeInsets.all(0),
                         onPressed: () async {
@@ -242,8 +229,8 @@ class RenderPublication extends StatelessWidget {
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
-                        // horizontal: 10,
-                      ),
+                          // horizontal: 10,
+                          ),
                       child: FlatButton(
                         padding: const EdgeInsets.all(0),
                         onPressed: () async {},
@@ -294,7 +281,8 @@ class LikeIconState extends State<LikeIcon> {
 
   void fetchIsLiked(int publicationId) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var response = await http.post(Uri.parse('http://localhost:5000/get/like/check/?token=${sharedPreferences.getString('token')}&publicationId=${publicationId}'));
+    var response = await http.post(Uri.parse(
+        'http://localhost:5000/get/like/check/?token=${sharedPreferences.getString('token')}&publicationId=${publicationId}'));
 
     print(response.body);
   }
