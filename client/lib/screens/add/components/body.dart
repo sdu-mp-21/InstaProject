@@ -1,17 +1,14 @@
 import 'dart:convert';
-import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:flutter/services.dart' show rootBundle;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 class Body extends StatefulWidget {
-  Body({Key? key}) : super(key: key);
+  const Body({Key? key}) : super(key: key);
 
   @override
   _BodyState createState() => _BodyState();
@@ -21,6 +18,7 @@ class _BodyState extends State<Body> {
   ImagePicker picker = ImagePicker();
   String path = '';
   late var bytes;
+  TextEditingController descriptionController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +26,8 @@ class _BodyState extends State<Body> {
       child: Column(
         children: [
           const Spacer(),
-          FittedBox(
+          SizedBox(
+            width: double.infinity,
             child: TextButton(
               onPressed: () async {
                 try {
@@ -51,9 +50,34 @@ class _BodyState extends State<Body> {
               ),
             ),
           ),
-          const Spacer(),
+          const SizedBox(
+            height: 20,
+          ),
           if (path != '') Image.network(path),
-          if (path != '') const Spacer(),
+          if (path != '')
+            const SizedBox(
+              height: 20,
+            ),
+          if (path != '')
+            TextField(
+              keyboardType: TextInputType.multiline,
+              maxLines: 5,
+              controller: descriptionController,
+              decoration: const InputDecoration(
+                filled: true,
+                fillColor: Colors.grey,
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black, width: 1),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey, width: 3),
+                ),
+              ),
+            ),
+          if (path != '')
+            const SizedBox(
+              height: 20,
+            ),
           if (path != '')
             FittedBox(
               child: TextButton(
@@ -70,7 +94,8 @@ class _BodyState extends State<Body> {
 
                   Map data = {
                     'image': bytes,
-                    'token': sharedPrefs.getString('token')
+                    'token': sharedPrefs.getString('token'),
+                    'description': descriptionController.text
                   };
                   var body = json.encode(data);
 
@@ -102,6 +127,7 @@ class _BodyState extends State<Body> {
                   'Upload',
                   style: TextStyle(
                     color: Colors.white,
+                    fontSize: 18,
                   ),
                 ),
               ),

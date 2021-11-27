@@ -6,6 +6,7 @@ const Publication = require("../models/publications");
 const generateRandomName = require("../scripts/generateRandomName");
 
 router.post("/publication", async (req, res) => {
+console.log(req.body)
   const { token, image, description } = req.body;
   const verifyToken = jwt.verify(token, "auth");
 
@@ -15,7 +16,7 @@ router.post("/publication", async (req, res) => {
     await new Publication({
       userId,
       data: image,
-      description: description || "",
+      desctiption: description || "",
       name: generateRandomName(50),
     }).save();
 
