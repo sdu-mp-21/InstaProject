@@ -172,7 +172,7 @@ router.get("/publication", async (req, res) => {
     });
     const comments = await Comment.find({ publicationId });
 
-    const user = await User.findOne({ userId: verify.userId });
+    const user = await User.findOne({ userId: publication.userId });
 
     res.send({
       publicationId: publication.publicationId,
@@ -278,43 +278,46 @@ router.post("/delete/comment", async (req, res) => {
 
 router.get("/followers", async (req, res) => {
   try {
-    const verify = jwt.verify(req.query.token, "auth");
-    if (verify) {
-      const peopleIFollow = await Subscription.find({
-        srcUserId: verify.userId,
+    const userId = req.query.id;
+
+    const peopleIFollow = await Subscription.find({
+      srcUserId: userId,
+    });
+    const peopleFollowToMe = await Subscription.find({
+      destUserId: userId,
+    });
+
+    const mongoQueryFollowing = [];
+    for (let people of peopleIFollow) {
+      mongoQueryFollowing.push({
+        userId: people.destUserId,
       });
-      const peopleFollowToMe = await Subscription.find({
-        destUserId: verify.userId,
+    }
+
+    const mongoQueryFollowers = [];
+    for (let people of peopleFollowToMe) {
+      mongoQueryFollowers.push({
+        userId: people.srcUserId,
       });
+    }
 
-      const mongoQueryFollowing = [];
-      for (let people of peopleIFollow) {
-        mongoQueryFollowing.push({
-          userId: people.destUserId,
-        });
-      }
-
-      const mongoQueryFollowers = [];
-      for (let people of peopleFollowToMe) {
-        mongoQueryFollowers.push({
-          userId: people.srcUserId,
-        });
-      }
-
-      const following = await User.find(
+    let following = [];
+    if (mongoQueryFollowing.length > 0) {
+      following = await User.find(
         { $or: mongoQueryFollowing },
         { userId: 1, avatar: 1, login: 1, name: 1, surname: 1 }
       );
+    }
 
-      const followers = await User.find(
+    let followers = [];
+    if (mongoQueryFollowers.length > 0) {
+      followers = await User.find(
         { $or: mongoQueryFollowers },
         { userId: 1, avatar: 1, login: 1, name: 1, surname: 1 }
       );
-
-      res.send({ following, followers });
-    } else {
-      res.status(401).send();
     }
+
+    res.send({ following, followers });
   } catch (e) {
     console.log(e);
     res.status(500).send();

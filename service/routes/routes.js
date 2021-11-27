@@ -15,4 +15,6 @@ router.use("/comment", require("../middleware/comment"));
 
 router.use("/stories", require("../middleware/stories"));
 
+router.use("/follow", require("../middleware/follow"));
+
 module.exports = router;

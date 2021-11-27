@@ -11,23 +11,24 @@ import 'package:http/http.dart' as http;
 class FollowingAndFollowersScreen extends StatefulWidget {
   String login = '';
   int index = 0;
+  int userId = 0;
 
-  FollowingAndFollowersScreen(this.login, this.index, {Key? key})
+  FollowingAndFollowersScreen(this.login, this.index, this.userId, {Key? key})
       : super(key: key);
 
   @override
   State<StatefulWidget> createState() =>
-      FollowingAndFollowersState(login, index);
+      FollowingAndFollowersState(login, index, this.userId);
 }
 
-Future<FollowersModel> fetchData() async {
+Future<FollowersModel> fetchData(int id) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   String? token = sharedPreferences.getString('token');
 
   // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjcwODczNzc3NzM3LCJpYXQiOjE2Mzc5NjQyODUsImV4cCI6MTYzNzk4NTg4NX0.5QqUTZZL5xEtIWxd_bcpEgTBEquTcOKX0kGaxtbLSRI
 
   final response = await http
-      .get(Uri.parse('http://localhost:5000/get/followers?token=$token'));
+      .get(Uri.parse('http://localhost:5000/get/followers?id=${id}&token=$token'));
 
   if (response.statusCode == 200) {
     return FollowersModel.fromJson(jsonDecode(response.body));
@@ -45,16 +46,17 @@ class FollowingAndFollowersState extends State<FollowingAndFollowersScreen>
   List following = [];
 
   String login = '';
+  int userId = 0;
   int index = 0;
 
-  FollowingAndFollowersState(this.login, this.index);
+  FollowingAndFollowersState(this.login, this.index, this.userId);
 
   @override
   void initState() {
     super.initState();
     tabController = TabController(length: 2, vsync: this, initialIndex: index);
 
-    futureFollowers = fetchData();
+    futureFollowers = fetchData(userId);
   }
 
   @override

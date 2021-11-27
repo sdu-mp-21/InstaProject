@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:untitled/screens/config/config_screen.dart';
 import 'package:untitled/screens/followingAndFollowers/following_and_followers_screen.dart';
+import 'package:untitled/screens/profile/components/follow_btn.dart';
 import 'package:untitled/screens/profile/components/publication_card.dart';
 
 import 'package:untitled/screens/profile/models/User.dart';
@@ -22,6 +23,7 @@ class BodyState extends State<Body> {
   String aboutMe = '';
   String avatar = '';
   String login = '';
+  late int userId;
   List publications = [];
   List countSubscribers = [];
   List countSubscriptions = [];
@@ -51,6 +53,7 @@ class BodyState extends State<Body> {
                         countSubscribers = data.subscribers;
                         countSubscriptions = data.subscriptions;
                         login = data.login;
+                        userId = data.userId;
                       },
                     );
                   },
@@ -65,7 +68,8 @@ class BodyState extends State<Body> {
                     countSubscribers,
                     countSubscriptions,
                     login,
-                    isMyProfile);
+                    isMyProfile,
+                    userId);
               } else if (snapshot.hasError) {
                 return Text('${snapshot.error}');
               }
@@ -85,6 +89,7 @@ class GenerateProfile extends StatelessWidget {
   String aboutMe = '';
   String avatar = '';
   String login = '';
+  int userId = 0;
   List publications = [];
   List subscribers = [];
   List subscriptions = [];
@@ -100,6 +105,7 @@ class GenerateProfile extends StatelessWidget {
       this.subscriptions,
       this.login,
       this.isMyProfile,
+      this.userId,
       {Key? key})
       : super(key: key);
 
@@ -187,7 +193,8 @@ class GenerateProfile extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) =>
-                                      FollowingAndFollowersScreen(login, 0),
+                                      FollowingAndFollowersScreen(
+                                          login, 0, userId),
                                 ),
                               );
                             },
@@ -217,7 +224,8 @@ class GenerateProfile extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) =>
-                                      FollowingAndFollowersScreen(login, 1),
+                                      FollowingAndFollowersScreen(
+                                          login, 1, userId),
                                 ),
                               );
                             },
@@ -283,6 +291,7 @@ class GenerateProfile extends StatelessWidget {
                       ),
                     ),
                   ),
+                if (!isMyProfile) FollowBtn(userId)
               ],
             ),
           ),

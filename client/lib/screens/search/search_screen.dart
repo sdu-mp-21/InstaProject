@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:untitled/screens/profile/another_profile_screen.dart';
 import 'package:untitled/screens/search/models/Search.dart';
 import 'package:http/http.dart' as http;
 
@@ -42,54 +43,54 @@ class SearchScreenState extends State<SearchScreen> {
     var size = MediaQuery.of(context).size;
     return Scaffold(
         body: Column(
-          children: [
-            Container(
-              width: size.width - 30,
-              decoration: BoxDecoration(
-                color: const Color.fromRGBO(59, 59, 59, 1.0),
-                border: Border.all(color: Colors.black, width: 1.0),
-                borderRadius: BorderRadius.circular(5.0),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                child: TextField(
-                  onChanged: (text) async {
-                    setState(() {
-                      _futureResult = fetchResult(text);
-                    });
-                  },
-                  style: const TextStyle(color: Colors.white, fontSize: 14),
-                  decoration: const InputDecoration(
-                    prefixIcon: Icon(Icons.search, color: Colors.grey),
-                    hintText: 'Поиск',
-                    hintStyle: TextStyle(color: Colors.grey, fontSize: 18),
-                    border: InputBorder.none,
-                  ),
-                ),
+      children: [
+        Container(
+          width: size.width - 30,
+          decoration: BoxDecoration(
+            color: const Color.fromRGBO(59, 59, 59, 1.0),
+            border: Border.all(color: Colors.black, width: 1.0),
+            borderRadius: BorderRadius.circular(5.0),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+            child: TextField(
+              onChanged: (text) async {
+                setState(() {
+                  _futureResult = fetchResult(text);
+                });
+              },
+              style: const TextStyle(color: Colors.white, fontSize: 14),
+              decoration: const InputDecoration(
+                prefixIcon: Icon(Icons.search, color: Colors.grey),
+                hintText: 'Поиск',
+                hintStyle: TextStyle(color: Colors.grey, fontSize: 18),
+                border: InputBorder.none,
               ),
             ),
-            FutureBuilder(
-              future: _futureResult,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.done) {
-                  if (snapshot.hasData) {
-                    _futureResult.then((data) {
-                      setState(() {
-                        result = data.result;
-                      });
-                    });
+          ),
+        ),
+        FutureBuilder(
+          future: _futureResult,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              if (snapshot.hasData) {
+                _futureResult.then((data) {
+                  setState(() {
+                    result = data.result;
+                  });
+                });
 
-                    return PrintResult(result);
-                  } else if (snapshot.hasError) {
-                    return Text('${snapshot.error}');
-                  }
-                }
+                return PrintResult(result);
+              } else if (snapshot.hasError) {
+                return Text('${snapshot.error}');
+              }
+            }
 
-                return const CircularProgressIndicator();
-              },
-            )
-          ],
-        ));
+            return const CircularProgressIndicator();
+          },
+        )
+      ],
+    ));
   }
 }
 
@@ -129,12 +130,12 @@ class PrintResult extends StatelessWidget {
                       alignment: Alignment.centerLeft,
                       child: GestureDetector(
                         onTap: () {
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //       builder: (context) =>
-                          //           AnotherProfile(result[i]['userId'])),
-                          // );
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    AnotherProfileScreen(result[i]['userId'])),
+                          );
                         },
                         child: Text(
                           result[i]['login'],
