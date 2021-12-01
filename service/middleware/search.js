@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
 const User = require("../models/users");
+const config = require("config");
 
 router.get("/", async (req, res) => {
   const verifyToken = jwt.verify(req.query.token, config.get("secret_key"));

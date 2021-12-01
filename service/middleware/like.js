@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
+const config = require("config");
 
 const Publication = require("../models/publications");
 const Like = require("../models/likes");
