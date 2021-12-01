@@ -1,12 +1,7 @@
 const router = require("express").Router();
 const jwt = require("jsonwebtoken");
-const fs = require("fs");
 const config = require("config");
 
-const User = require("../models/users");
-const Like = require("../models/likes");
-const Comment = require("../models/comments");
-const Publication = require("../models/publications");
 const Subscription = require("../models/subscriptions");
 
 router.post("/", async (req, res) => {
@@ -14,7 +9,7 @@ router.post("/", async (req, res) => {
     const { id, token } = req.body;
 
     if (token) {
-      const verify = jwt.verify(token, "auth");
+      const verify = jwt.verify(token, config.get("secret_key"));
 
       if (verify) {
         if (id) {
@@ -65,7 +60,7 @@ router.post("/check", async (req, res) => {
     const { id, token } = req.body;
 
     if (token) {
-      const verify = jwt.verify(token, "auth");
+      const verify = jwt.verify(token, config.get("secret_key"));
 
       if (verify) {
         if (id) {

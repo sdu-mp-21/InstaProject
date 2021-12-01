@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt");
 const randomNumber = require("random-number");
 const router = require("express").Router();
 const jwt = require("jsonwebtoken");
+const config = require("config");
 
 const USERS = require("../models/users");
 
@@ -11,7 +12,7 @@ router.post("/check/token", async (req, res) => {
     try {
       const { token } = req.query;
 
-      const verify = jwt.verify(token, "auth");
+      const verify = jwt.verify(token, config.get("secret_key"));
 
       if (verify) {
         res.status(200).send({ isValid: true });
@@ -73,9 +74,13 @@ router.post("/registration", async (req, res) => {
               phoneNumber: clearPhone(phone),
             });
 
-            const token = jwt.sign({ userId: candidate.userId }, "auth", {
-              expiresIn: "6h",
-            });
+            const token = jwt.sign(
+              { userId: candidate.userId },
+              config.get("secret_key"),
+              {
+                expiresIn: "6h",
+              }
+            );
 
             await candidate.save();
 
@@ -103,9 +108,13 @@ router.post("/login", async (req, res) => {
       try {
         if (user) {
           if (await bcrypt.compare(password, user.password)) {
-            const token = jwt.sign({ userId: user.userId }, "auth", {
-              expiresIn: "6h",
-            });
+            const token = jwt.sign(
+              { userId: user.userId },
+              config.get("secret_key"),
+              {
+                expiresIn: "6h",
+              }
+            );
 
             res.send({ status: 200, token });
           } else {

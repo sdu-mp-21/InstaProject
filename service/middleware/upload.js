@@ -1,14 +1,14 @@
 const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
+const config = require("config");
 
 const Publication = require("../models/publications");
 const generateRandomName = require("../scripts/generateRandomName");
 
 router.post("/publication", async (req, res) => {
-console.log(req.body)
   const { token, image, description } = req.body;
-  const verifyToken = jwt.verify(token, "auth");
+  const verifyToken = jwt.verify(token, config.get("secret_key"));
 
   if (verifyToken) {
     const userId = verifyToken.userId;
@@ -29,7 +29,7 @@ console.log(req.body)
 router.post("/story", async (req, res) => {
   try {
     const { token, image, description } = req.body;
-    const verifyToken = jwt.verify(token, "auth");
+    const verifyToken = jwt.verify(token, config.get("secret_key"));
 
     if (verifyToken) {
       const userId = verifyToken.userId;

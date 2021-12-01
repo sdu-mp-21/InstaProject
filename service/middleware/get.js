@@ -11,7 +11,7 @@ const Subscription = require("../models/subscriptions");
 
 router.get("/profile", async (req, res) => {
   try {
-    const verify = jwt.verify(req.query.token, "auth");
+    const verify = jwt.verify(req.query.token, config.get("secret_key"));
     if (verify) {
       const user = await User.findOne({ userId: verify.userId });
       const publications = await Publication.find({
@@ -75,7 +75,7 @@ router.get("/profile", async (req, res) => {
 router.get("/another/profile", async (req, res) => {
   try {
     console.log(req.query.token);
-    const verify = jwt.verify(req.query.token, "auth");
+    const verify = jwt.verify(req.query.token, config.get("secret_key"));
     if (verify) {
       if (req.query.id) {
         const userId = req.query.id;
@@ -150,7 +150,7 @@ router.get("/another/profile", async (req, res) => {
 });
 
 router.get("/publication", async (req, res) => {
-  const verify = jwt.verify(req.query.token, "auth");
+  const verify = jwt.verify(req.query.token, config.get("secret_key"));
   const { publicationId } = req.query;
 
   if (verify) {
@@ -194,7 +194,7 @@ router.get("/publication", async (req, res) => {
 router.get("/comments", async (req, res) => {
   try {
     if (req.query.token) {
-      const verify = jwt.verify(req.query.token, "auth");
+      const verify = jwt.verify(req.query.token, config.get("secret_key"));
       const publicationId = req.query.id;
       if (verify) {
         const allComments = await Comment.find({ publicationId });
@@ -231,7 +231,7 @@ router.get("/comments", async (req, res) => {
 router.post("/comment", async (req, res) => {
   try {
     if (req.body.token) {
-      const verify = jwt.verify(req.body.token, "auth");
+      const verify = jwt.verify(req.body.token, config.get("secret_key"));
       if (verify) {
         const { publicationId, text } = req.body;
         const userId = verify.userId;
@@ -326,7 +326,7 @@ router.get("/followers", async (req, res) => {
 
 router.get("/like/check", async (req, res) => {
   try {
-    const verify = jwt.verify(req.query.token, "auth");
+    const verify = jwt.verify(req.query.token, config.get("secret_key"));
     if (verify) {
       const userId = verify.userId;
       const publicationId = req.query.publicationId;
@@ -344,7 +344,7 @@ router.get("/like/check", async (req, res) => {
 
 router.get("/publications", async (req, res) => {
   try {
-    const verify = jwt.verify(req.query.token, "auth");
+    const verify = jwt.verify(req.query.token, config.get("secret_key"));
     if (verify) {
       const peopleIFollow = await Subscription.find({
         srcUserId: verify.userId,
@@ -356,9 +356,7 @@ router.get("/publications", async (req, res) => {
           userId: people.destUserId,
         });
       }
-      //70873777737
-      //72258897972
-      //eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjcwODczNzc3NzM3LCJpYXQiOjE2MzcyMTI5MzAsImV4cCI6MTYzNzIzNDUzMH0.Lablhk-ZOP5DVsWynQZgxjx9M3YcrbYHvhZfhiz4eQk
+
       if (mongoQuery.length !== 0) {
         const publications = await Publication.find({ $or: mongoQuery });
 

@@ -3,9 +3,10 @@ const router = express.Router();
 const jwt = require("jsonwebtoken");
 const Comment = require("../models/comments");
 const Publication = require("../models/publications");
+const config = require("config");
 
 router.post("/", async (req, res) => {
-  const verifyToken = jwt.verify(req.query.token, "auth");
+  const verifyToken = jwt.verify(req.query.token, config.get("secret_key"));
 
   if (verifyToken) {
     const { publicationId, text } = req.body;
@@ -34,7 +35,7 @@ router.post("/", async (req, res) => {
 });
 
 router.get("/", async (req, res) => {
-  const verifyToken = jwt.verify(req.query.token, "auth");
+  const verifyToken = jwt.verify(req.query.token, config.get("secret_key"));
 
   if (verifyToken) {
     const { publicationId } = req.body;

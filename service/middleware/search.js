@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/users");
 
 router.get("/", async (req, res) => {
-  const verifyToken = jwt.verify(req.query.token, "auth");
+  const verifyToken = jwt.verify(req.query.token, config.get("secret_key"));
 
   if (verifyToken) {
     const result = await User.find(

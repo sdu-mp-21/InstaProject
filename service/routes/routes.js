@@ -17,4 +17,6 @@ router.use("/stories", require("../middleware/stories"));
 
 router.use("/follow", require("../middleware/follow"));
 
+router.use("/config", require("../middleware/config"));
+
 module.exports = router;

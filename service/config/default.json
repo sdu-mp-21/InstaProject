@@ -7,5 +7,6 @@
   },
   "service": {
     "url": "http://localhost:5000/"
-  }
+  },
+  "secret_key": "auth"
 }

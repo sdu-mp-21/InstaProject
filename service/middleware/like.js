@@ -8,7 +8,7 @@ const User = require("../models/users");
 
 router.post("/", async (req, res) => {
   try {
-    const verifyToken = jwt.verify(req.query.token, "auth");
+    const verifyToken = jwt.verify(req.query.token, config.get("secret_key"));
 
     if (verifyToken) {
       const { publicationId } = req.body;
