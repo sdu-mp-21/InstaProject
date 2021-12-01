@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 class Direct extends StatefulWidget {
   String login = '';
   int index = 0;
+
   @override
   _DirectState createState() => _DirectState();
 }
@@ -21,8 +21,6 @@ Future fetch() async {
 
 class _DirectState extends State<Direct> with TickerProviderStateMixin {
   late TabController _tabController;
-
-
 
   @override
   void initState() {
@@ -97,38 +95,42 @@ class _DirectState extends State<Direct> with TickerProviderStateMixin {
                       )),
                 ),
               ),
-              Card(
-                color: Colors.black,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    ListTile(
-                      leading: Container(
-                        width: 60.0,
-                        height: 60.0,
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
-                            image: NetworkImage(
-                                'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Circle-icons-profile.svg/1200px-Circle-icons-profile.svg.jpg'),
-                            fit: BoxFit.fill,
+              GestureDetector(
+                onTap: () => Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => Dialog())),
+                child: Card(
+                  color: Colors.black,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      ListTile(
+                        leading: Container(
+                          width: 60.0,
+                          height: 60.0,
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                              image: NetworkImage(
+                                  'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Circle-icons-profile.svg/1200px-Circle-icons-profile.svg.jpg'),
+                              fit: BoxFit.fill,
+                            ),
                           ),
+                          margin: const EdgeInsets.symmetric(horizontal: 8.0),
                         ),
-                        margin: const EdgeInsets.symmetric(horizontal: 8.0),
+                        title: const Text(
+                          "login",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        subtitle: const Text(
+                          "message of user",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        trailing: const IconButton(
+                            onPressed: null,
+                            icon: Icon(Icons.videocam, color: Colors.white)),
                       ),
-                      title: const Text(
-                        "login",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      subtitle: const Text(
-                        "message of user",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      trailing: const IconButton(
-                          onPressed: null,
-                          icon: Icon(Icons.videocam, color: Colors.white)),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
               Card(
