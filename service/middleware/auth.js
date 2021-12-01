@@ -126,6 +126,8 @@ router.post("/login", async (req, res) => {
       } catch (er) {
         res.send({ status: 400, message: "Логин или пароль неправильно" });
       }
+    } else {
+      res.status(400).send();
     }
   } catch (e) {
     console.log(e);
