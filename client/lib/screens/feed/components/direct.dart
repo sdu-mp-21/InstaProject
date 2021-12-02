@@ -9,8 +9,10 @@ class Direct extends StatefulWidget {
   String login = '';
   int index = 0;
 
+  Direct(this.login);
+
   @override
-  _DirectState createState() => _DirectState();
+  _DirectState createState() => _DirectState(login);
 }
 
 Future fetch() async {
@@ -24,6 +26,9 @@ Future fetch() async {
 
 class _DirectState extends State<Direct> with TickerProviderStateMixin {
   late TabController _tabController;
+  String login;
+
+  _DirectState(this.login);
 
   @override
   void initState() {
@@ -37,8 +42,8 @@ class _DirectState extends State<Direct> with TickerProviderStateMixin {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: const Text(
-          "login",
+        title: Text(
+          login,
           style: TextStyle(fontSize: 24.0, fontFamily: 'Arial'),
         ),
         actions: <Widget>[

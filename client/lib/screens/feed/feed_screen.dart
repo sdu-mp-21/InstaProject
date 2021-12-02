@@ -14,7 +14,7 @@ class FeedScreen extends StatefulWidget {
 }
 
 class FeedScreenState extends State<FeedScreen> {
-  late String login;
+  String login = 'mahambet';
 
   Future fetch() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
@@ -46,17 +46,17 @@ class FeedScreenState extends State<FeedScreen> {
           ),
           index == 0
               ? const Positioned(
-            right: 10.0,
-            child: CircleAvatar(
-              backgroundColor: Colors.blueAccent,
-              radius: 10.0,
-              child: Icon(
-                Icons.add,
-                size: 14.0,
-                color: Colors.white,
-              ),
-            ),
-          )
+                  right: 10.0,
+                  child: CircleAvatar(
+                    backgroundColor: Colors.blueAccent,
+                    radius: 10.0,
+                    child: Icon(
+                      Icons.add,
+                      size: 14.0,
+                      color: Colors.white,
+                    ),
+                  ),
+                )
               : Container()
         ],
       ),
@@ -72,59 +72,40 @@ class FeedScreenState extends State<FeedScreen> {
   }
 
   Widget build(BuildContext context) {
+    fetch();
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        elevation: 1.0,
+        centerTitle: true,
+        leading: GestureDetector(onTap: () {}, child: Icon(Icons.camera_alt)),
+        title: const Text("Instagram"),
+        actions: [
+          // action button
+          IconButton(
+              icon: Icon(Icons.send),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  PageTransition(
+                    type: PageTransitionType.rightToLeft,
+                    child: Direct(login),
+                  ),
+                );
+              })
+        ],
+      ),
       body: Container(
-        child: FutureBuilder(
-          future: future,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              if (snapshot.hasData) {
-                future.then((data) {
-                  print(data);
-                });
-
-                return Text(login, style:  TextStyle(color: Colors.white));
-              }
-            }
-
-            return Text('ok', style:  TextStyle(color: Colors.white));
-          },
-        )
-      )
+        margin: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            storyProfile,
+          ],
+        ),
+      ),
     );
-
-
-//    fetch();
-//    return Scaffold(
-//      appBar: AppBar(
-//        backgroundColor: Colors.black,
-//        elevation: 1.0,
-//        centerTitle: true,
-//        leading:GestureDetector(onTap: (){} ,child:Icon(Icons.camera_alt)),
-//        title: const Text("Instagram"),
-//        actions: [
-//          // action button
-//          IconButton(
-//              icon: Icon(Icons.send),
-//              onPressed: () {
-//                Navigator.push(
-//                    context,
-//                    PageTransition(
-//                        type: PageTransitionType.rightToLeft, child: Direct()));
-//              })
-//        ],
-//      ),
-//      body: Container(
-//        margin: const EdgeInsets.all(16.0),
-//        child: Column(
-//          crossAxisAlignment: CrossAxisAlignment.stretch,
-//          mainAxisAlignment: MainAxisAlignment.start,
-//          mainAxisSize: MainAxisSize.min,
-//          children: [
-//            storyProfile,
-//          ],
-//        ),
-//      ),
-//    );
   }
 }
