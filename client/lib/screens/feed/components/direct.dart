@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+
+import 'dialog.dart';
 
 class Direct extends StatefulWidget {
   String login = '';
@@ -96,8 +99,10 @@ class _DirectState extends State<Direct> with TickerProviderStateMixin {
                 ),
               ),
               GestureDetector(
-                onTap: () => Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => Dialog())),
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => const DialogScreen()));
+                },
                 child: Card(
                   color: Colors.black,
                   child: Column(

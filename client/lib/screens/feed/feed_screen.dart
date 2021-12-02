@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -12,11 +14,15 @@ class FeedScreen extends StatefulWidget {
 }
 
 class FeedScreenState extends State<FeedScreen> {
+  late String login;
 
   Future fetch() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     final response = await http.get(Uri.parse(
         'http://localhost:5000/get/publications?token=${sharedPreferences.getString('token')}'));
+
+    var data = jsonDecode(response.body);
+    login = data['user']['login'];
   }
 
   final storyProfile = Expanded(
@@ -57,38 +63,68 @@ class FeedScreenState extends State<FeedScreen> {
     ),
   );
 
+  late Future future;
+
+  @override
+  void initState() {
+    super.initState();
+    future = fetch();
+  }
+
   Widget build(BuildContext context) {
-    fetch();
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        elevation: 1.0,
-        centerTitle: true,
-        leading:GestureDetector(onTap: (){} ,child:Icon(Icons.camera_alt)),
-        title: const Text("Instagram"),
-        actions: [
-          // action button
-          IconButton(
-              icon: Icon(Icons.send),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    PageTransition(
-                        type: PageTransitionType.rightToLeft, child: Direct()));
-              })
-        ],
-      ),
       body: Container(
-        margin: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            storyProfile,
-          ],
-        ),
-      ),
+        child: FutureBuilder(
+          future: future,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              if (snapshot.hasData) {
+                future.then((data) {
+                  print(data);
+                });
+
+                return Text(login, style:  TextStyle(color: Colors.white));
+              }
+            }
+
+            return Text('ok', style:  TextStyle(color: Colors.white));
+          },
+        )
+      )
     );
+
+
+//    fetch();
+//    return Scaffold(
+//      appBar: AppBar(
+//        backgroundColor: Colors.black,
+//        elevation: 1.0,
+//        centerTitle: true,
+//        leading:GestureDetector(onTap: (){} ,child:Icon(Icons.camera_alt)),
+//        title: const Text("Instagram"),
+//        actions: [
+//          // action button
+//          IconButton(
+//              icon: Icon(Icons.send),
+//              onPressed: () {
+//                Navigator.push(
+//                    context,
+//                    PageTransition(
+//                        type: PageTransitionType.rightToLeft, child: Direct()));
+//              })
+//        ],
+//      ),
+//      body: Container(
+//        margin: const EdgeInsets.all(16.0),
+//        child: Column(
+//          crossAxisAlignment: CrossAxisAlignment.stretch,
+//          mainAxisAlignment: MainAxisAlignment.start,
+//          mainAxisSize: MainAxisSize.min,
+//          children: [
+//            storyProfile,
+//          ],
+//        ),
+//      ),
+//    );
   }
 }
