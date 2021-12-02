@@ -152,3 +152,102 @@ class _BodyState extends State<Body> {
     );
   }
 }
+
+// class Add extends StatelessWidget {
+//   get http => null;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return TextButton(
+//       onPressed: () async {
+//         FilePickerResult? result = await FilePicker.platform.pickFiles(
+//           type: FileType.custom,
+//           allowedExtensions: ['jpg', 'png', 'jpeg'],
+//         );
+
+//         if (result != null) {
+//           Uint8List? fileBytes = result.files.first.bytes;
+
+//           SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
+
+//           Map data = {
+//             'image': fileBytes,
+//             'token': sharedPrefs.getString('token')
+//           };
+//           //encode Map to JSON
+//           var body = json.encode(data);
+
+//           var response = await http.post(
+//             Uri.parse('http://localhost:5000/upload/publication'),
+//             body: body,
+//             headers: {
+//               'Content-Type': 'application/json',
+//             },
+//           );
+//         }
+//       },
+//       child: const Text(
+//         'Upload photo',
+//         style: TextStyle(color: Colors.white),
+//       ),
+//     );
+    
+//   }
+//   class HomePage extends StatefulWidget {
+//   const HomePage({Key? key}) : super(key: key);
+
+//   @override
+//   _HomePageState createState() => _HomePageState();
+// }
+
+
+// class _HomePageState extends State<HomePage> {
+//   final ImagePicker _picker = ImagePicker();
+//   XFile? image;
+//   @override
+//   Widget build(BuildContext context) {
+//     return SafeArea(
+//       child: Stack(
+//         children: [
+
+//       //SizedBox(
+//       image == null ? Text("No Image Selected") : Image.file(File(image!.path), height: 800,), //width: 400, height: 800,
+//     //),
+//           Positioned(
+
+//             right: MediaQuery.of(context).size.width/2.3,
+//             bottom: MediaQuery.of(context).size.width/10,
+//             child: FloatingActionButton(
+//               backgroundColor: Colors.blue,
+//               onPressed: () {
+//                 filePicker();
+//               } ,
+//               child: Icon(Icons.camera_alt,),
+//             ),
+//           ),
+//           Positioned(
+//             width: 36,
+//             height:36,
+//             top: 10,
+//             left: 8,
+//             child: FloatingActionButton(
+//               backgroundColor: Color.fromRGBO(0, 0, 0, 0.1),
+//               onPressed: (){},
+//               child: Icon(Icons.arrow_back_rounded),
+//             ),
+
+//           ),
+
+
+//         ],
+//       ));
+//   }
+
+//   void filePicker() async {
+//     final XFile? selectedImage = await _picker.pickImage(source: ImageSource.camera);
+//     print(selectedImage!.path);
+//     setState(() {
+//       image = selectedImage;
+//     });
+//   }
+// }
