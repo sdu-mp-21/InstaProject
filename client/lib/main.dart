@@ -1,5 +1,8 @@
 import 'dart:convert';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -8,6 +11,15 @@ import 'package:untitled/screens/logInOrSignUp/login_or_sign_up_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  print('trying');
+  try {
+    await Firebase.initializeApp();
+  } catch (e) {
+    print(e);
+    print('error in connected to firebase');
+  }
+  print('initialized');
 
   bool isAuthenticate = false;
   try {

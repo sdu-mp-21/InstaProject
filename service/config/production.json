@@ -1,0 +1,12 @@
+{
+  "PORT": 5000,
+  "db": {
+    "url": "mongodb+srv://<login>:<password>@cluster0.x1qmb.mongodb.net/instagram?retryWrites=true&w=majority",
+    "login": "root",
+    "password": "iVKauabMdjeU5OUl"
+  },
+  "service": {
+    "url": "http://localhost:5000/"
+  },
+  "secret_key": "secretKeyToInstaCloneProject"
+}

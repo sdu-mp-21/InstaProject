@@ -2,7 +2,7 @@ const bcrypt = require("bcrypt");
 const randomNumber = require("random-number");
 const router = require("express").Router();
 const jwt = require("jsonwebtoken");
-const config = require("config");
+const config = require("../config");
 
 const USERS = require("../models/users");
 
@@ -12,7 +12,7 @@ router.post("/check/token", async (req, res) => {
     try {
       const { token } = req.query;
 
-      const verify = jwt.verify(token, config.get("secret_key"));
+      const verify = jwt.verify(token, config.secret_key);
 
       if (verify) {
         res.status(200).send({ isValid: true });
