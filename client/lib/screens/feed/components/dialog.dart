@@ -13,6 +13,7 @@ class _DialogState extends State<DialogScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(icon: Icon(Icons.chevron_left), onPressed: () { Navigator.pop(context); },),
         backgroundColor: Colors.black,
         title: Row(
           children: [
@@ -54,24 +55,7 @@ class _DialogState extends State<DialogScreen> {
             ),
           ),
         ],
-      ),
-    body:Padding(padding:EdgeInsets.only(top: 600.0),child:
-        Row(children: [
-          Icon(Icons.camera_alt,color:Colors.white),
-          TextField(
-            decoration: InputDecoration(
-                prefixIcon: Icon(Icons.search, color: Colors.white),
-                hintText: 'Поиск',
-                hintStyle: TextStyle(color: Colors.white, fontSize: 18),
-                filled: true,
-                fillColor: Colors.black,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide.none,
-                )),
-          ),
 
-      ],),
     ),
     );
   }
