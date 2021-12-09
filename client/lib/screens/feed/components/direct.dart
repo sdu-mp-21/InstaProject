@@ -91,6 +91,7 @@ class _DirectState extends State<Direct> with TickerProviderStateMixin {
               Padding(
                 padding: EdgeInsets.only(top: 10.0, left: 10.0, right: 10.0),
                 child: TextField(
+                  style: TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                       prefixIcon: Icon(Icons.search, color: Colors.white),
                       hintText: 'Поиск',
